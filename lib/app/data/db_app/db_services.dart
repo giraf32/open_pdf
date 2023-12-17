@@ -20,9 +20,9 @@ class DbServices implements DbApi {
   }
 
   @override
-   initDB() async {
+  initDB() async {
     try {
-      return  await openDatabase(
+      return await openDatabase(
         join(await getDatabasesPath(), 'pdf_database'),
         onCreate: (Database db, version) async {
           return await db.execute(
@@ -33,7 +33,6 @@ class DbServices implements DbApi {
     } catch (ex) {
       print(ex);
     }
-
   }
 
   // @override
@@ -55,14 +54,16 @@ class DbServices implements DbApi {
 
   @override
   Future<int?> insertPDF({required PDFModel pdfModel}) async {
-    final id = await _database?.insert('pdf', pdfModel.toMapPDF(),
+    final db = await database;
+    final id = await db!.insert('pdf', pdfModel.toMapPDF(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
 
   @override
   Future<List<PDFModel>> getPDFList() async {
-    final List<Map<String, dynamic>> pdfMaps = await _database!.query('pdf');
+    final db = await database;
+    final List<Map<String, dynamic>> pdfMaps = await db!.query('pdf');
 
     return List.generate(pdfMaps.length, (index) {
       return PDFModel(
@@ -71,17 +72,18 @@ class DbServices implements DbApi {
           name: pdfMaps[index]['name'],
           favourites: pdfMaps[index]['favourites'],
           dateTime: pdfMaps[index]['dateTime']);
-
     });
   }
 
   @override
   Future<void> deletePDF({required int? id}) async {
-    await _database?.delete('pdf', where: 'id = ?', whereArgs: [id]);
+    final db = await database;
+    await db!.delete('pdf', where: 'id = ?', whereArgs: [id]);
   }
 
   @override
   Future<void> updatePDF({required PDFModel pdfModel}) async {
-    await _database?.update('pdf', pdfModel.toMapPDF(),where: 'id = ?',whereArgs: [pdfModel.id]);
+    await _database?.update('pdf', pdfModel.toMapPDF(),
+        where: 'id = ?', whereArgs: [pdfModel.id]);
   }
 }
