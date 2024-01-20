@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/data/db_app/db_services.dart';
+import 'package:open_pdf/app/data/db_app/init_db.dart';
 import 'package:open_pdf/app/data/repository/pdf_repository.dart';
 import 'package:open_pdf/app/domain/model/model_pdf.dart';
 import 'package:open_pdf/route/open_pdf.dart';
@@ -12,8 +13,8 @@ class ProviderPDF extends ChangeNotifier {
   ProviderPDF();
 
   NotifierState notifierState = NotifierState.initial;
-
-  final _pdfRepository = PdfRepository(dbServices: DbServices.db);
+  //var db =  await InitDb().database;
+  final _pdfRepository = PdfRepository(dbServices: DbServices(InitDb()));
   var pdfModelList = <PDFModel?>[];
 
   var pdfListFavourites = <PDFModel?>[];

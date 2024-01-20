@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:open_pdf/app/data/db_app/init_db.dart';
 import 'package:open_pdf/app/ui/page/home_page_pdf.dart';
 import 'package:provider/provider.dart';
-
-import 'app/data/db_app/db_services.dart';
 import 'app/domain/provider/provider_pdf.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await DbServices().initDB();
-  await DbServices.db.database;
+
+ // await DbServices.db.database;
+  await InitDb().database;
 
   runApp(
     ChangeNotifierProvider(
