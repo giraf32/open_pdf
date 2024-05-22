@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:open_pdf/app/domain/db_api.dart';
 import 'package:open_pdf/app/domain/pdf_api.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,12 +19,15 @@ class PdfRepository implements PdfApi {
     final result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
     if (result == null) return null;
-
+    final size = result.files.single.size.toString();
     final name = result.files.single.name.toString();
     final id = name.hashCode;
     final path = result.files.single.path.toString();
-    final dateTime = DateTime.now().toString();
-    final pdfModel = PDFModel(id: id, path: path, name: name,favourites: 0,dateTime: dateTime);
+    final dateTime = DateTime.now();
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    //final DateFormat formatter = DateFormat.d().add_M().add_y();
+    final String formatDate = formatter.format(dateTime);
+    final pdfModel = PDFModel(id: id, path: path, name: name,favourites: 0, dateTime: formatDate, size: size);
     await dbServices.insertPDF(pdfModel: pdfModel);
     return File(path);
 

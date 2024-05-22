@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 
 class PDFViewerPage extends StatefulWidget {
   final File file;
+
   const PDFViewerPage({super.key, required this.file});
 
   @override
@@ -20,10 +21,11 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
   @override
   Widget build(BuildContext context) {
     final name = basename(widget.file.path);
-    final text = '${indexPage! + 1} of $pages';
+    final text = '${indexPage! + 1} из $pages';
     return Scaffold(
+      backgroundColor: Colors.cyan,
       appBar: AppBar(
-         // automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           // leading: Builder(
           //   builder: (BuildContext context) {
           //     return IconButton(
@@ -42,34 +44,36 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
           title: Text(name),
           actions: pages! >= 2
               ? <Widget>[
-            Center(child: Text(text)),
-            IconButton(
-              icon: const Icon(
-                Icons.chevron_left,
-                size: 32,
-              ),
-              onPressed: () {
-                int? page = indexPage == 0 ? pages : indexPage! - 1;
-                controller?.setPage(page!);
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.chevron_right,
-                size: 32,
-              ),
-              onPressed: () {
-                int? page = indexPage == pages! - 1 ? 0 : indexPage! + 1;
-                controller?.setPage(page);
-              },
-            ),
-          ]
+                  Center(child: Text(text)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      int? page = indexPage == 0 ? pages : indexPage! - 1;
+                      controller?.setPage(page!);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.chevron_right,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      int? page = indexPage == pages! - 1 ? 0 : indexPage! + 1;
+                      controller?.setPage(page);
+                    },
+                  ),
+                ]
               : null),
       body: PDFView(
+        //swipeHorizontal: true,
         filePath: widget.file.path,
-        autoSpacing: true,
-        //pageSnap: false,
-        pageFling: true,
+        //fitEachPage: false,
+        // autoSpacing: false,
+       // pageSnap: false,
+        // pageFling: false,
         onRender: (pages) => setState(() {
           this.pages = pages;
         }),

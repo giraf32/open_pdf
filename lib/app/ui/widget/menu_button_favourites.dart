@@ -69,7 +69,7 @@ class MenuButtonFavourites extends StatelessWidget {
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {
-                context.read<ProviderPDF>().changeOpenPdf = false;
+              //  context.read<ProviderPDF>().changeOpenPdf = false;
               },
               child: const Row(
                 children: [

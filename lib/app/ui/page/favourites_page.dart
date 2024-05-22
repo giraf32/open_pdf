@@ -1,22 +1,20 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
-import 'package:open_pdf/app/ui/widget/pdf_list.dart';
+
 import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
 import 'package:provider/provider.dart';
 
-
-
-class HomePagePdf extends StatefulWidget {
-  const HomePagePdf({super.key, required this.title});
+class FavouritesPage extends StatefulWidget {
+  const FavouritesPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<HomePagePdf> createState() => _HomePagePdfState();
+  State<FavouritesPage> createState() => _FavouritesPageState();
 }
 
-class _HomePagePdfState extends State<HomePagePdf> {
+class _FavouritesPageState extends State<FavouritesPage> {
   bool position = true;
 
   @override
@@ -30,9 +28,6 @@ class _HomePagePdfState extends State<HomePagePdf> {
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Theme.of(context).primaryColor,
         // initialActiveIndex: position,
-        // curveSize: 80,
-        // height: 80,
-        top: -16,
         items: const [
           // TabItem(title: 'Избранное', icon: Icons.add_card),
           TabItem(title: 'Просмотренные', icon: Icons.access_time_outlined),
@@ -42,10 +37,11 @@ class _HomePagePdfState extends State<HomePagePdf> {
         onTap: (index) {
           switch (index) {
             case 0:
-              // context.read<ProviderPDF>().changeMenuItemFavourites = false;
+            // context.read<ProviderPDF>().changeMenuItemFavourites = false;
               setState(() {
                 position = true;
                 debugPrint('position3 $position');
+
               });
               break;
             case 1:
@@ -55,6 +51,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
               });
               break;
             case 2:
+
               setState(() {
                 position = false;
                 debugPrint('position2 $position');
@@ -75,23 +72,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
       body: Padding(
           padding: const EdgeInsets.all(8.0),
           // child: PDFViewerList(),
-          child: position ? PDFList() : PDFListFavourites()),
+          child: PDFListFavourites()),
     );
-  }
-}
-
-class Style extends StyleHook {
-  @override
-  double get activeIconSize => 30;
-
-  @override
-  double get activeIconMargin => 10;
-
-  @override
-  double get iconSize => 20;
-
-  @override
-  TextStyle textStyle(Color color, String? fontFamily) {
-    return TextStyle(fontSize: 12, color: color);
   }
 }

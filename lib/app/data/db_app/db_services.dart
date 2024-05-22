@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:open_pdf/app/data/db_app/init_db.dart';
 import 'package:open_pdf/app/domain/db_api.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/model/model_pdf.dart';
 
 class DbServices implements DbApi {
- final InitDb initDb;
+  final InitDb initDb;
 
   DbServices(this.initDb);
 
@@ -31,7 +30,9 @@ class DbServices implements DbApi {
           path: pdfMaps[index]['path'],
           name: pdfMaps[index]['name'],
           favourites: pdfMaps[index]['favourites'],
-          dateTime: pdfMaps[index]['dateTime']);
+          dateTime: pdfMaps[index]['dateTime'],
+          size: pdfMaps[index]['size'],
+      );
     });
   }
 

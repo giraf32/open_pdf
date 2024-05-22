@@ -3,16 +3,17 @@ class PDFModel {
   final String path;
   final String name;
   final String? dateTime;
+  final String? size;
   int? favourites;
 
-  PDFModel({this.id, required this.path, required this.name,required this.favourites,this.dateTime});
+  PDFModel({this.id, required this.path, required this.name,required this.favourites,this.dateTime,this.size});
 
   Map<String, dynamic> toMapPDF() {
-    return {'id': id, 'path': path, 'name': name,'favourites': favourites, 'dateTime': dateTime};
+    return {'id': id, 'path': path, 'name': name,'favourites': favourites, 'dateTime': dateTime, 'size': size};
   }
 
   @override
   String toString() {
-    return 'PDFModel{id: $id, path: $path, name: $name, favourites: $favourites, dateTime: $dateTime}';
+    return 'PDFModel{id: $id, path: $path, name: $name, favourites: $favourites, dateTime: $dateTime, size: $size}';
   }
 }

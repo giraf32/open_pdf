@@ -3,12 +3,13 @@ import 'package:sqflite/sqflite.dart';
 
 class InitDb {
   InitDb._();
+
   static InitDb? _initDb;
   static Database? _database;
-  factory InitDb(){
-    return _initDb ??= InitDb._() ;
-  }
 
+  factory InitDb.create() {
+    return _initDb ??= InitDb._();
+  }
 
   Future<Database?> get database async {
     if (_database != null) return _database;
@@ -17,14 +18,13 @@ class InitDb {
     return _database;
   }
 
-
   _createDb() async {
     try {
       return await openDatabase(
         join(await getDatabasesPath(), 'pdf_database'),
         onCreate: (Database db, version) async {
           return await db.execute(
-              'CREATE TABLE pdf (id INTEGER PRIMARY KEY, path TEXT, name TEXT, favourites INTEGER, dateTime TEXT)');
+              'CREATE TABLE pdf (id INTEGER PRIMARY KEY, path TEXT, name TEXT, favourites INTEGER, dateTime TEXT, size TEXT)');
         },
         version: 1,
       );
