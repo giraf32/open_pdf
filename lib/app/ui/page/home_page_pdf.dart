@@ -1,97 +1,102 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
-import 'package:open_pdf/app/ui/widget/pdf_list.dart';
+import 'package:open_pdf/app/ui/widget/list_folder.dart';
+import 'package:open_pdf/app/ui/widget/pdf_list_history.dart';
 import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
+
 import 'package:provider/provider.dart';
-
-
 
 class HomePagePdf extends StatefulWidget {
   const HomePagePdf({super.key, required this.title});
 
   final String title;
 
+
   @override
   State<HomePagePdf> createState() => _HomePagePdfState();
 }
 
 class _HomePagePdfState extends State<HomePagePdf> {
-  bool position = true;
-
+ // bool position = true;
+  final listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
+  int indexActive = 1;
   @override
   Widget build(BuildContext context) {
-    debugPrint('position $position');
-    context.read<ProviderPDF>().updatePDFListModel();
-    context.read<ProviderPDF>().updatePDFListModelFavourites();
+   // debugPrint('position $position');
+    //TabStyle tabStyle = TabStyle.reactCircle;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        // initialActiveIndex: position,
-        // curveSize: 80,
-        // height: 80,
-        top: -16,
-        items: const [
-          // TabItem(title: 'Избранное', icon: Icons.add_card),
-          TabItem(title: 'Просмотренные', icon: Icons.access_time_outlined),
-          TabItem(title: 'Найти файл', icon: Icons.add),
-          TabItem(title: 'Избранные', icon: Icons.favorite),
-        ],
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              // context.read<ProviderPDF>().changeMenuItemFavourites = false;
-              setState(() {
-                position = true;
-                debugPrint('position3 $position');
-              });
-              break;
-            case 1:
-              context.read<ProviderPDF>().addAndOpenPdf(context);
-              setState(() {
-                position = true;
-              });
-              break;
-            case 2:
-              setState(() {
-                position = false;
-                debugPrint('position2 $position');
-                //context.read<ProviderPDF>().updatePDFListModelFavourites();
-              });
-              break;
-          }
-        },
-        style: TabStyle.react,
-      ),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Colors.white),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        bottomNavigationBar: ConvexAppBar(
+          style: TabStyle.reactCircle,
+          backgroundColor: Theme.of(context).primaryColor,
+          initialActiveIndex: indexActive,
+          // curveSize: 80,
+          // height: 80,
+          top: -16,
+          items: const [
+          //    TabItem(title: 'Дом', icon: Icons.home),
+          //   TabItem(title: 'Просмотренные', icon: Icons.access_time_outlined),
+          //   TabItem(title: 'Найти файл', icon: Icons.add),
+          //   TabItem(title: 'Избранные', icon: Icons.favorite),
+            TabItem(icon: Icons.folder),
+            TabItem(icon: Icons.access_time_outlined),
+            TabItem(icon: Icons.add),
+            TabItem(icon: Icons.favorite),
+
+          ],
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                // context.read<ProviderPDF>().changeMenuItemFavourites = false;
+                setState(() {
+                  indexActive = 0;
+                  debugPrint('index0 $indexActive');
+                });
+                break;
+              case 1:
+                setState(() {
+                  indexActive = 1;
+                  debugPrint('index1 $indexActive');
+                });
+                break;
+              case 2:
+                context.read<ProviderPDF>().addAndOpenPdf(context);
+                setState(() {
+                  indexActive = 1;
+                  debugPrint('index2 $indexActive');
+                });
+                break;
+              case 3:
+               // OpenPdfScreenFavourites().openPDFRoute(context);
+                setState(() {
+                  indexActive = 2;
+                  debugPrint('index3 $indexActive');
+                });
+                break;
+            }
+          },
         ),
-      ),
-      body: Padding(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            widget.title,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(8.0),
           // child: PDFViewerList(),
-          child: position ? PDFList() : PDFListFavourites()),
-    );
+          // child: position ? PDFList() : PDFListFavourites()),
+          child: getWidget(indexActive, listPdfPage)
+          //PDFListHistory(),
+        ));
+  }
+
+  Widget getWidget(int index , List<Widget> list){
+    return list[index];
   }
 }
 
-class Style extends StyleHook {
-  @override
-  double get activeIconSize => 30;
 
-  @override
-  double get activeIconMargin => 10;
-
-  @override
-  double get iconSize => 20;
-
-  @override
-  TextStyle textStyle(Color color, String? fontFamily) {
-    return TextStyle(fontSize: 12, color: color);
-  }
-}

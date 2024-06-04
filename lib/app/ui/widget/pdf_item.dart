@@ -19,15 +19,18 @@ class PdfItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     File? file;
-   // final String dateCreateFile = pdfModel.dateTime.toString();
-   // final String sizeFile = pdfModel.size.toString();
+    // final String dateCreateFile = pdfModel.dateTime.toString();
+    // final String sizeFile = pdfModel.size.toString();
 
     return Card(
       color: Theme.of(context).cardColor,
       child: ListTile(
         //subtitle: Text(pdfModel.dateTime.toString()),
-        title: Text(pdfModel.name),
-       // subtitle: Text('$dateCreateFile | $sizeFile'),
+        title: Text(
+          pdfModel.name,
+          style: TextStyle(fontSize: 14),
+        ),
+        // subtitle: Text('$dateCreateFile | $sizeFile'),
         onTap: () {
           file = File(pdfModel.path);
           if (!file!.existsSync()) {
@@ -35,14 +38,14 @@ class PdfItem extends StatelessWidget {
                 .showSnackBar(const SnackBar(content: Text('Файл не найден')));
           }
           if (!context.mounted) return;
-         // context.read<ProviderPDF>().changeOpenPdf
-               OpenPdfRx().openPDFRoute(context, file!);
-          //OpenPdfViewer().openPDFRoute(context, file!);
+          OpenPdfRx().openPDFRoute(context, file!);
         },
         trailing: context.read<ProviderPDF>().changeMenuItemFavourites
             ? MenuButtonFavourites(pdfModel: pdfModel)
             : MenuButton(pdfModel: pdfModel),
-        leading: ShowsFirstPageCard(filePath: pdfModel.path,),
+        leading: ShowsFirstPageCard(
+          filePath: pdfModel.path,
+        ),
 
         onLongPress: () {},
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 
 import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
+import 'package:open_pdf/route/open_pdf.dart';
 import 'package:provider/provider.dart';
 
 class FavouritesPage extends StatefulWidget {
@@ -19,15 +20,15 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('position $position');
-    context.read<ProviderPDF>().updatePDFListModel();
-    context.read<ProviderPDF>().updatePDFListModelFavourites();
+    // debugPrint('position $position');
+    // context.read<ProviderPDF>().updatePDFListModel();
+    // context.read<ProviderPDF>().updatePDFListModelFavourites();
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        // initialActiveIndex: position,
+        initialActiveIndex: 2,
         items: const [
           // TabItem(title: 'Избранное', icon: Icons.add_card),
           TabItem(title: 'Просмотренные', icon: Icons.access_time_outlined),
@@ -38,25 +39,15 @@ class _FavouritesPageState extends State<FavouritesPage> {
           switch (index) {
             case 0:
             // context.read<ProviderPDF>().changeMenuItemFavourites = false;
-              setState(() {
-                position = true;
-                debugPrint('position3 $position');
+             Navigator.of(context).pop();
 
-              });
               break;
             case 1:
               context.read<ProviderPDF>().addAndOpenPdf(context);
-              setState(() {
-                position = true;
-              });
+
               break;
             case 2:
 
-              setState(() {
-                position = false;
-                debugPrint('position2 $position');
-                //context.read<ProviderPDF>().updatePDFListModelFavourites();
-              });
               break;
           }
         },

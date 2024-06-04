@@ -1,23 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import 'package:open_pdf/app/ui/viewer_pdf/pdf_render.dart';
-
+import 'package:open_pdf/app/ui/page/favourites_page.dart';
+import 'package:open_pdf/app/ui/page/home_page_pdf.dart';
 import '../app/ui/viewer_pdf/pdf_rx.dart';
-import '../app/ui/viewer_pdf/pdf_viewer_page.dart';
-
-class OpenPdfViewer {
-  void openPDFRoute(BuildContext context, File file) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)));
-}
-
-class OpenPdfRender {
-  void openPDFRoute(BuildContext context, File file) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => PdfRender(file: file)));
-}
 
 class OpenPdfRx {
   void openPDFRoute(BuildContext context, File file) => Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => PdfRx(file: file)));
+}
+
+class OpenPdfScreenFavourites {
+  void openPDFRoute(BuildContext context) =>
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FavouritesPage(title: 'Favourites')));
+}
+
+class OpenPdfScreenHome {
+  void openPDFRoute(BuildContext context) => Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => HomePagePdf(title: 'Home')));
 }

@@ -26,12 +26,12 @@ class DbServices implements DbApi {
 
     return List.generate(pdfMaps.length, (index) {
       return PDFModel(
-          id: pdfMaps[index]['id'],
-          path: pdfMaps[index]['path'],
-          name: pdfMaps[index]['name'],
-          favourites: pdfMaps[index]['favourites'],
-          dateTime: pdfMaps[index]['dateTime'],
-          size: pdfMaps[index]['size'],
+        id: pdfMaps[index]['id'],
+        path: pdfMaps[index]['path'],
+        name: pdfMaps[index]['name'],
+        favourites: pdfMaps[index]['favourites'],
+        dateTime: pdfMaps[index]['dateTime'],
+        size: pdfMaps[index]['size'],
       );
     });
   }

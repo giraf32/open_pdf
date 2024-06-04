@@ -11,10 +11,10 @@ class ShowsFirstPageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
         margin: const EdgeInsets.all(2.0),
-        padding: const EdgeInsets.all(1.0),
+       // padding: const EdgeInsets.all(1.0),
         decoration:  BoxDecoration(
          // borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 1.0, color: Theme.of(context).primaryColor),
+          border: Border.all(width: 1.0, color: Colors.black26),
         ),
         height: 70,
         width: 40,

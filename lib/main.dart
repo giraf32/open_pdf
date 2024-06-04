@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    context.read<ProviderPDF>().updatePDFListModel();
+    context.read<ProviderPDF>().updatePDFListModelFavourites();
+
     return MaterialApp(
       builder: (context, child) {
         final deviceData = MediaQuery.of(context);
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.red.shade300),
         primaryColor: Colors.red.shade600,
         scaffoldBackgroundColor: Colors.white,
+       // textTheme: TextTheme(),
         useMaterial3: true,
       ),
       home: const HomePagePdf(title: 'Open PDF'),

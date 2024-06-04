@@ -3,8 +3,8 @@ import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:open_pdf/app/ui/widget/pdf_item.dart';
 import 'package:provider/provider.dart';
 
-class PDFList extends StatelessWidget {
-  const PDFList({super.key});
+class PDFListHistory extends StatelessWidget {
+  const PDFListHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
