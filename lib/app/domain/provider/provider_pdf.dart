@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_pdf/app/data/db_app/db_services.dart';
@@ -16,8 +14,8 @@ class ProviderPDF extends ChangeNotifier {
 
   NotifierState notifierState = NotifierState.initial;
   final _pdfRepository = PdfRepository(dbServices: DbServices(InitDb.create()));
-  var pdfModelList = <PDFModel?>[];
-  var pdfListFavourites = <PDFModel?>[];
+  var pdfModelListHistory = <PdfModel?>[];
+  var pdfListFavourites = <PdfModel?>[];
 
 //  bool changeOpenPdf = true;
   bool changeMenuItemFavourites = false;
@@ -31,16 +29,26 @@ class ProviderPDF extends ChangeNotifier {
 
   int currentPage = 0;
 
-  Future<void> addAndOpenPdf(BuildContext context) async {
+  Future<void> addListFilePdfFromStorage(BuildContext context) async {
     try {
       notifierState = NotifierState.loading;
       final listPdfModelsStorage = await _pdfRepository.getPdfListStorage();
-      if (listPdfModelsStorage == null) return;
-      final pdfModelClone = await comparePdfModel(listPdfModelsStorage);
+
+      if (listPdfModelsStorage == null) {
+        notifierState = NotifierState.loaded;
+        notifyListeners();
+        return;
+      }
+      final pdfListModelDb =
+          await _pdfRepository.getPdfListModelFromDbHistory();
+
+      final pdfModelClone = await _comparePdfModel(
+          listFirst: listPdfModelsStorage, listSecond: pdfListModelDb);
       if (!context.mounted) return;
       if (pdfModelClone.isNotEmpty) showAlertDialogPdf(context, pdfModelClone);
       await _pdfRepository.insertDbListPdfModel(
           listPdfModels: listPdfModelsStorage);
+      //----------------------------------------------------------------------------------
       // if (listPdfModels.length < 2) {
       //   print('Выбран один файл');
       //
@@ -56,17 +64,17 @@ class ProviderPDF extends ChangeNotifier {
       //  OpenPdfRx().openPDFRoute(context, file);
 
       // OpenPdfViewer().openPDFRoute(context, file);
-      updatePDFListModel();
+      updatePdfListModelHistory();
     } catch (e, s) {
       print('Error addOpenPdf: $e');
       print('Error addOpenPdf: $s');
     }
   }
 
-  Future<void> deleteFilePdf(PDFModel pdfModel) async {
+  Future<void> deleteFilePdf(PdfModel pdfModel) async {
     try {
-      await _pdfRepository.deleteFilePDF(pdfModel: pdfModel);
-      await updatePDFListModel();
+      await _pdfRepository.deleteFilePdfAndModelDb(pdfModel: pdfModel);
+      await updatePdfListModelHistory();
       await updatePDFListModelFavourites();
     } catch (e, s) {
       print('Error delete: $e');
@@ -74,32 +82,17 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
-  Future<void> updatePDFListModel() async {
-    var localListPdf = <PDFModel>[];
-    // var formatter = DateFormat();
+  Future<void> updatePdfListModelHistory() async {
     try {
       notifierState = NotifierState.loading;
-      await _pdfRepository.getPdfListModelFromDb().then((value) {
-        value.map((e) {
-          if (e.favourites == 0) {
-            final id = e.id;
-            print('id = $id');
-            var file = File(e.path);
-            if (!file.existsSync()) {
-              _pdfRepository.deleteDbPdfModel(pdfModel: e);
-            } else {
-              localListPdf.add(e);
-            }
-          }
-        }).toList();
-      });
       // if (localListPdf.length > 1) {
       //   await sortListPdf(localListPdf);
       //   pdfModelList = localListPdf;
       // } else {
       //   pdfModelList = localListPdf;
       // }
-      pdfModelList = localListPdf;
+      // pdfModelList = localListPdf;
+      pdfModelListHistory = await _pdfRepository.getPdfListModelFromDbHistory();
 
       // print('listLocalPdf 0 $localListPdf');
     } catch (e, s) {
@@ -111,23 +104,17 @@ class ProviderPDF extends ChangeNotifier {
   }
 
   Future<void> updatePDFListModelFavourites() async {
-    var localFavourites = <PDFModel>[];
+    // var localFavourites = <PDFModel>[];
     try {
       notifierState = NotifierState.loading;
-      await _pdfRepository.getPdfListModelFromDb().then((value) {
-        value.map((e) {
-          if (e.favourites == 1) {
-            localFavourites.add(e);
-          }
-        }).toList();
-      });
       // if (localFavourites.length > 1) {
-      //   await sortListPdf(localFavourites);
+      //   await _sortListPdf(localFavourites);
       //   pdfListFavourites = localFavourites;
       // } else {
       //   pdfListFavourites = localFavourites;
       // }
-      pdfListFavourites = localFavourites;
+      //pdfListFavourites = localFavourites;
+      pdfListFavourites = await _pdfRepository.getPdfListModelFromDbFavorite();
       print('localFavourites = $pdfListFavourites');
       notifierState = NotifierState.loaded;
       notifyListeners();
@@ -137,29 +124,41 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
-  Future<void> savePdfFavourites(PDFModel pdfModel) async {
+  Future<void> savePdfFavourites(
+      PdfModel pdfModel, BuildContext context) async {
     try {
-      await _pdfRepository.savePdfFavourites(pdfModel: pdfModel);
+      final pdfListFavorites =
+          await _pdfRepository.getPdfListModelFromDbFavorite();
+
+      if (pdfListFavorites.isNotEmpty) {
+        final pdfListAddFavorites = <PdfModel>[]..add(pdfModel);
+        final pdfModelClone = await _comparePdfModel(
+            listFirst: pdfListAddFavorites, listSecond: pdfListFavorites);
+        if (!context.mounted) return;
+        if (pdfModelClone.isNotEmpty)
+        await showAlertDialogPdf(context, pdfModelClone);
+      }
+      await _pdfRepository.savePdfModelFavouritesAppStorage(pdfModel: pdfModel);
       await updatePDFListModelFavourites();
-      await updatePDFListModel();
+      await updatePdfListModelHistory();
     } catch (e, s) {
       print('Error savePdfFavourites: $e');
       print('Error savePdfFavourites: $s');
     }
   }
 
-  Future<void> updatePdfNameFile(PDFModel newPdfModel) async {
+  Future<void> updatePdfNameFile(PdfModel newPdfModel) async {
     try {
       await _pdfRepository.updatePdfModel(pdfModel: newPdfModel);
       await updatePDFListModelFavourites();
-      await updatePDFListModel();
+      await updatePdfListModelHistory();
     } catch (e, s) {
       print('Error updatePdfNameFile: $e');
       print('Error updatePdfNameFile: $s');
     }
   }
 
-  Future<List<PDFModel>> sortListPdf(List<PDFModel> list) async {
+  Future<List<PdfModel>> _sortListPdf(List<PdfModel> list) async {
     final DateFormat formatter = DateFormat.yMd().add_Hms();
 
     bool Sorted = false;
@@ -174,22 +173,22 @@ class ProviderPDF extends ChangeNotifier {
           list[i - 1] = tmp;
           Sorted = false;
         }
-
       }
     }
 
     return list;
   }
 
-  Future<List<PDFModel?>> comparePdfModel(
-      List<PDFModel> listPdfModelStorage) async {
-    var list = <PDFModel?>[];
-    final pdfListModelDb = await _pdfRepository.getPdfListModelFromDb();
+  Future<List<PdfModel?>> _comparePdfModel(
+      {required List<PdfModel> listFirst,
+      required List<PdfModel> listSecond}) async {
+    var list = <PdfModel?>[];
+
     //print('Compare2 : $listPdfModelStorage');
-    listPdfModelStorage.forEach((modelStorage) {
-      pdfListModelDb.forEach((modelDb) {
-        if (modelDb.name == modelStorage.name) {
-          list.add(modelDb);
+    listFirst.forEach((modelFirst) {
+      listSecond.forEach((modelSecond) {
+        if (modelSecond.name == modelFirst.name) {
+          list.add(modelSecond);
         }
       });
     });

@@ -9,7 +9,7 @@ import 'change_name_file.dart';
 class MenuButtonFavourites extends StatelessWidget {
   const MenuButtonFavourites({super.key, required this.pdfModel});
 
-  final PDFModel pdfModel;
+  final PdfModel pdfModel;
 
   @override
   Widget build(BuildContext context) {

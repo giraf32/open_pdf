@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
-import 'package:open_pdf/app/ui/widget/pdf_item.dart';
+import 'package:open_pdf/app/ui/widget/pdf_list_item.dart';
 import 'package:provider/provider.dart';
 
 class PDFListFavourites extends StatelessWidget {
@@ -18,7 +18,7 @@ class PDFListFavourites extends StatelessWidget {
       } else {
         return ListView(
           children: notifier.pdfListFavourites.map((e) {
-            return PdfItem(pdfModel: e!);
+            return PdfListItem(pdfModel: e!);
           }).toList(),
         );
       }

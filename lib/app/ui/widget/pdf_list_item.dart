@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 import '../../../route/open_pdf.dart';
 import '../../domain/model/model_pdf.dart';
 
-class PdfItem extends StatelessWidget {
-  PdfItem({super.key, required this.pdfModel});
+class PdfListItem extends StatelessWidget {
+  PdfListItem({super.key, required this.pdfModel});
 
-  final PDFModel pdfModel;
+  final PdfModel pdfModel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class PdfItem extends StatelessWidget {
     return Card(
       color: Theme.of(context).cardColor,
       child: ListTile(
-        //subtitle: Text(pdfModel.dateTime.toString()),
+        subtitle: Text(pdfModel.dateTime.toString(),style: TextStyle(fontSize: 10),),
         title: Text(
           pdfModel.name,
           style: TextStyle(fontSize: 14),

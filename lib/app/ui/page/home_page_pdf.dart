@@ -19,7 +19,7 @@ class HomePagePdf extends StatefulWidget {
 
 class _HomePagePdfState extends State<HomePagePdf> {
  // bool position = true;
-  final listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
+ // final listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
   int indexActive = 1;
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
                 });
                 break;
               case 2:
-                context.read<ProviderPDF>().addAndOpenPdf(context);
+                context.read<ProviderPDF>().addListFilePdfFromStorage(context);
                 setState(() {
                   indexActive = 1;
                   debugPrint('index2 $indexActive');
@@ -89,13 +89,14 @@ class _HomePagePdfState extends State<HomePagePdf> {
           padding: const EdgeInsets.all(8.0),
           // child: PDFViewerList(),
           // child: position ? PDFList() : PDFListFavourites()),
-          child: getWidget(indexActive, listPdfPage)
+          child: getWidget(indexActive)
           //PDFListHistory(),
         ));
   }
 
-  Widget getWidget(int index , List<Widget> list){
-    return list[index];
+  Widget getWidget(int index){
+    var listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
+    return listPdfPage[index];
   }
 }
 

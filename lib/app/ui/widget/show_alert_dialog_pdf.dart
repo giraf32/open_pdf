@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../domain/provider/provider_pdf.dart';
 
 Future<void> showAlertDialogPdf(
-    BuildContext context, List<PDFModel?> listPdf) async {
+    BuildContext context, List<PdfModel?> listPdf) async {
   final provider = context.read<ProviderPDF>();
   return showDialog<void>(
     context: context,
@@ -23,12 +23,12 @@ Future<void> showAlertDialogPdf(
               },
               child: const Text('добавить', style: TextStyle(fontSize: 16))),
           TextButton(
-              onPressed: () {
-                if (listPdf.isNotEmpty) {
+              onPressed: () async {
+                if (listPdf.isNotEmpty) await {
                   listPdf.forEach((element) {
                     provider.deleteFilePdf(element!);
-                  });
-                }
+                  })
+                };
                 Navigator.pop(context);
               },
               child: Text(

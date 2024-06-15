@@ -9,7 +9,7 @@ import 'change_name_file.dart';
 class MenuButton extends StatelessWidget {
   const MenuButton({super.key, required this.pdfModel});
 
-  final PDFModel pdfModel;
+  final PdfModel pdfModel;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class MenuButton extends StatelessWidget {
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {
-                context.read<ProviderPDF>().savePdfFavourites(pdfModel);
+                context.read<ProviderPDF>().savePdfFavourites(pdfModel,context);
 
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Файл добавлен в избранное'),
@@ -93,7 +93,8 @@ class MenuButton extends StatelessWidget {
                 children: [
                   Icon(Icons.folder_open),
                   SizedBox(width: 10),
-                  Text('Открыть PDF')
+                  // TODO create folder
+                  Text('В папку')
                 ],
               ),
             ),

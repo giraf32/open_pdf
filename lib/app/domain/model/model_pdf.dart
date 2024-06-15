@@ -1,19 +1,18 @@
-class PDFModel {
+class PdfModel {
   final int? id;
   final String path;
   final String name;
-  final String? dateTime;
-  final String? size;
+  final String dateTime;
+  final String size;
+  final int favourites;
 
-  final int? favourites;
-
-  PDFModel({
+  PdfModel({
     this.id,
     required this.path,
     required this.name,
     required this.favourites,
-    this.dateTime,
-    this.size,
+    required this.dateTime,
+    required this.size,
   });
 
   Map<String, dynamic> toMapPDF() {

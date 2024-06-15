@@ -7,7 +7,7 @@ import '../../domain/provider/provider_pdf.dart';
 class ChangeNameFile extends StatefulWidget {
   const ChangeNameFile({super.key, required this.pdfModel});
 
-  final PDFModel pdfModel;
+  final PdfModel pdfModel;
 
   // String? textChange = pdfModel.name ;
 
@@ -55,11 +55,12 @@ class _ChangeNameFileState extends State<ChangeNameFile> {
                     borderRadius: BorderRadius.all(Radius.circular(10.0)))),
             controller: myController,
             onSubmitted: (v) {
-              context.read<ProviderPDF>().updatePdfNameFile(PDFModel(
+              context.read<ProviderPDF>().updatePdfNameFile(PdfModel(
                   dateTime: widget.pdfModel.dateTime,
                   id: widget.pdfModel.id,
                   path: widget.pdfModel.path,
                   name: v,
+                  size: widget.pdfModel.size ,
                   favourites: widget.pdfModel.favourites));
               Navigator.pop(context);
             },
