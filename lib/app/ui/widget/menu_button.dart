@@ -45,9 +45,9 @@ class MenuButton extends StatelessWidget {
                   behavior: SnackBarBehavior.floating,
                 ));
               },
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.favorite),
+                  Icon(Icons.favorite,color: Colors.redAccent,),
                   SizedBox(width: 10),
                   Text('В избранное')
                 ],

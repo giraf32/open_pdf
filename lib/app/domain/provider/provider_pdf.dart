@@ -17,7 +17,6 @@ class ProviderPDF extends ChangeNotifier {
   var pdfModelListHistory = <PdfModel?>[];
   var pdfListFavourites = <PdfModel?>[];
 
-//  bool changeOpenPdf = true;
   bool changeMenuItemFavourites = false;
 
   int? pages = 0;
@@ -42,29 +41,14 @@ class ProviderPDF extends ChangeNotifier {
       final pdfListModelDb =
           await _pdfRepository.getPdfListModelFromDbHistory();
 
-      final pdfModelClone = await _comparePdfModel(
+      final pdfModelClone =  _comparePdfModel(
           listFirst: listPdfModelsStorage, listSecond: pdfListModelDb);
       if (!context.mounted) return;
-      if (pdfModelClone.isNotEmpty) showAlertDialogPdf(context, pdfModelClone);
+      if (pdfModelClone.isNotEmpty) await showAlertDialogPdf(context, pdfModelClone);
       await _pdfRepository.insertDbListPdfModel(
           listPdfModels: listPdfModelsStorage);
-      //----------------------------------------------------------------------------------
-      // if (listPdfModels.length < 2) {
-      //   print('Выбран один файл');
-      //
-      //  final path = listPdfModels.first.path;
-      //        final file = File(path);
-      //   showAlertDialogOpenPdf(context, file);
-      // } else {
-      //   print('Выбран list файл');
-      // }
-      // listPdfModels.sort();
-      //  print('ChangeOpenPDF = $changeOpenPdf');
-      //  changeOpenPdf
-      //  OpenPdfRx().openPDFRoute(context, file);
 
-      // OpenPdfViewer().openPDFRoute(context, file);
-      updatePdfListModelHistory();
+      await updatePdfListModelHistory();
     } catch (e, s) {
       print('Error addOpenPdf: $e');
       print('Error addOpenPdf: $s');
@@ -82,16 +66,27 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteFilePdfAfterCompare(List<PdfModel?> listPdf) async {
+    try {
+      //TODO await here maybe excess
+      if (listPdf.isNotEmpty)
+        await {
+          listPdf.forEach((element) {
+            _pdfRepository.deleteFilePdfAndModelDb(pdfModel: element!);
+          })
+        };
+     // await updatePdfListModelHistory();
+     // await updatePDFListModelFavourites();
+    } catch (e, s) {
+      print('Error delete after compare: $e');
+      print('Error delete after compare: $s');
+    }
+  }
+
   Future<void> updatePdfListModelHistory() async {
     try {
       notifierState = NotifierState.loading;
-      // if (localListPdf.length > 1) {
-      //   await sortListPdf(localListPdf);
-      //   pdfModelList = localListPdf;
-      // } else {
-      //   pdfModelList = localListPdf;
-      // }
-      // pdfModelList = localListPdf;
+
       pdfModelListHistory = await _pdfRepository.getPdfListModelFromDbHistory();
 
       // print('listLocalPdf 0 $localListPdf');
@@ -104,16 +99,9 @@ class ProviderPDF extends ChangeNotifier {
   }
 
   Future<void> updatePDFListModelFavourites() async {
-    // var localFavourites = <PDFModel>[];
     try {
       notifierState = NotifierState.loading;
-      // if (localFavourites.length > 1) {
-      //   await _sortListPdf(localFavourites);
-      //   pdfListFavourites = localFavourites;
-      // } else {
-      //   pdfListFavourites = localFavourites;
-      // }
-      //pdfListFavourites = localFavourites;
+
       pdfListFavourites = await _pdfRepository.getPdfListModelFromDbFavorite();
       print('localFavourites = $pdfListFavourites');
       notifierState = NotifierState.loaded;
@@ -136,7 +124,7 @@ class ProviderPDF extends ChangeNotifier {
             listFirst: pdfListAddFavorites, listSecond: pdfListFavorites);
         if (!context.mounted) return;
         if (pdfModelClone.isNotEmpty)
-        await showAlertDialogPdf(context, pdfModelClone);
+          await showAlertDialogPdf(context, pdfModelClone);
       }
       await _pdfRepository.savePdfModelFavouritesAppStorage(pdfModel: pdfModel);
       await updatePDFListModelFavourites();
@@ -158,33 +146,11 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
-  Future<List<PdfModel>> _sortListPdf(List<PdfModel> list) async {
-    final DateFormat formatter = DateFormat.yMd().add_Hms();
-
-    bool Sorted = false;
-    while (!Sorted) {
-      Sorted = true;
-      for (int i = 1; list.length > i; i++) {
-        var dateTimeFirst = formatter.parse(list[i - 1].dateTime!);
-        var dateTimeSecond = formatter.parse(list[i].dateTime!);
-        if (dateTimeFirst.isBefore(dateTimeSecond)) {
-          var tmp = list[i];
-          list[i] = list[i - 1];
-          list[i - 1] = tmp;
-          Sorted = false;
-        }
-      }
-    }
-
-    return list;
-  }
-
-  Future<List<PdfModel?>> _comparePdfModel(
+  List<PdfModel?> _comparePdfModel(
       {required List<PdfModel> listFirst,
-      required List<PdfModel> listSecond}) async {
+      required List<PdfModel> listSecond})  {
     var list = <PdfModel?>[];
 
-    //print('Compare2 : $listPdfModelStorage');
     listFirst.forEach((modelFirst) {
       listSecond.forEach((modelSecond) {
         if (modelSecond.name == modelFirst.name) {

@@ -7,14 +7,16 @@ import '../../domain/provider/provider_pdf.dart';
 Future<void> showAlertDialogPdf(
     BuildContext context, List<PdfModel?> listPdf) async {
   final provider = context.read<ProviderPDF>();
+  final nameFile = listPdf.first?.name;
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        content: const Text(
+        title: const Text(
           'Файл c таким именем уже был добавлен',
           style: TextStyle(fontSize: 18),
         ),
+        content: Text(nameFile ?? 'name file'),
         actions: <Widget>[
           TextButton(
               onPressed: () {
@@ -24,11 +26,7 @@ Future<void> showAlertDialogPdf(
               child: const Text('добавить', style: TextStyle(fontSize: 16))),
           TextButton(
               onPressed: () async {
-                if (listPdf.isNotEmpty) await {
-                  listPdf.forEach((element) {
-                    provider.deleteFilePdf(element!);
-                  })
-                };
+             await  provider.deleteFilePdfAfterCompare(listPdf);
                 Navigator.pop(context);
               },
               child: Text(

@@ -30,11 +30,12 @@ class PdfRepository implements PdfApi {
 
   @override
   Future<void> deleteFilePdfAndModelDb({required PdfModel pdfModel}) async {
+    await dbServices.deletePdfDb(id: pdfModel.id);
     var file = File(pdfModel.path);
     if (await file.exists()) {
       file.delete();
     }
-    await dbServices.deletePdfDb(id: pdfModel.id);
+
   }
 
   @override
@@ -53,6 +54,7 @@ class PdfRepository implements PdfApi {
           }
         }
       });
+      if (localListPdfHistory.length > 1) localListPdfHistory = _sortListPdf(localListPdfHistory);
     });
     return localListPdfHistory;
   }
@@ -69,6 +71,7 @@ class PdfRepository implements PdfApi {
           if (!file.existsSync())  deleteDbPdfModel(pdfModel: pdfModel);
           localListFavorite.add(pdfModel);
         }
+        if (localListFavorite.length > 1) localListFavorite = _sortListPdf(localListFavorite);
       });
     });
 
@@ -151,6 +154,28 @@ class PdfRepository implements PdfApi {
     print('dataTime : $formatDate');
     return formatDate;
   }
+
+  List<PdfModel> _sortListPdf(List<PdfModel> list){
+    final DateFormat formatter = DateFormat.yMd().add_Hms();
+
+    bool Sorted = false;
+    while (!Sorted) {
+      Sorted = true;
+      for (int i = 1; list.length > i; i++) {
+        var dateTimeFirst = formatter.parse(list[i - 1].dateTime);
+        var dateTimeSecond = formatter.parse(list[i].dateTime);
+        if (dateTimeFirst.isBefore(dateTimeSecond)) {
+          var tmp = list[i];
+          list[i] = list[i - 1];
+          list[i - 1] = tmp;
+          Sorted = false;
+        }
+      }
+    }
+
+    return list;
+  }
+
 
 // Future<void> getDirectory() async {
 //   String? selectedDirectory =  await FilePicker.platform.getDirectoryPath();

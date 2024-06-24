@@ -19,13 +19,11 @@ class PdfListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     File? file;
-    // final String dateCreateFile = pdfModel.dateTime.toString();
-    // final String sizeFile = pdfModel.size.toString();
 
     return Card(
       color: Theme.of(context).cardColor,
       child: ListTile(
-        subtitle: Text(pdfModel.dateTime.toString(),style: TextStyle(fontSize: 10),),
+        subtitle: Text(pdfModel.dateTime.toString(),style: TextStyle(fontSize: 12),),
         title: Text(
           pdfModel.name,
           style: TextStyle(fontSize: 14),
@@ -47,7 +45,9 @@ class PdfListItem extends StatelessWidget {
           filePath: pdfModel.path,
         ),
 
-        onLongPress: () {},
+        onLongPress: () {
+          //TODO animation show date time , size.
+        },
       ),
     );
   }

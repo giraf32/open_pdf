@@ -1,12 +1,13 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class ShowsFirstPageCard extends StatelessWidget {
   final String filePath;
-
-  //final PdfDocument pdfDocument =  PdfDocument.openFile(filePath) as PdfDocument;
-  const ShowsFirstPageCard({super.key, required this.filePath});
-
+   ShowsFirstPageCard({super.key, required this.filePath});
+  //final size = Size(40, 70);
+ // final pages = PdfPage;
   @override
   Widget build(BuildContext context) {
     // final document = PdfDocument.openFile(filePath);
@@ -24,8 +25,17 @@ class ShowsFirstPageCard extends StatelessWidget {
                 document: document,
                 pageNumber: 1,
                 alignment: Alignment.topCenter,
+              //  pageSizeCallback: v(Size(70, 40)) ,
                 // maximumDpi: 200,
               ),
             ));
   }
+
+  v (Size size ) {
+  // var pageHeight = page.height ;
+  // var pageWidth = page.width ;
+   var widgetHeight = size.height;
+   var widgetWidth = size.width;
+   return Size(widgetWidth, widgetHeight);
+ }
 }
