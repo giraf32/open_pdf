@@ -6,8 +6,8 @@ import 'package:open_pdf/app/ui/page/home_page_pdf.dart';
 import '../app/ui/viewer_pdf/pdf_rx.dart';
 
 class OpenPdfRx {
-  void openPDFRoute(BuildContext context, File file) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => PdfRx(file: file)));
+  void openPDFRoute(BuildContext context, File file , String name) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => PdfRx(file: file, name: name,)));
 }
 
 class OpenPdfScreenFavourites {

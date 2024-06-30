@@ -79,7 +79,7 @@ class PdfRepository implements PdfApi {
   }
 
   @override
-  Future<List<PdfModel>?> getPdfListStorage() async {
+  Future<List<PdfModel>?> getPdfListDeviceStorage() async {
     final result = await FilePicker.platform.pickFiles(
         type: FileType.custom, allowedExtensions: ['pdf'], allowMultiple: true);
 

@@ -25,10 +25,11 @@ class _HomePagePdfState extends State<HomePagePdf> {
   Widget build(BuildContext context) {
    // debugPrint('position $position');
     //TabStyle tabStyle = TabStyle.reactCircle;
-
+   // TabController controller;
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: ConvexAppBar(
+         // controller: controller ,
           style: TabStyle.reactCircle,
           backgroundColor: Theme.of(context).primaryColor,
           initialActiveIndex: indexActive,

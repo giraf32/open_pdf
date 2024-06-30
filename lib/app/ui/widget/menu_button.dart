@@ -47,7 +47,7 @@ class MenuButton extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  Icon(Icons.favorite,color: Colors.redAccent,),
+                  Icon(Icons.favorite, color: pdfModel.favourites == 1 ? Colors.redAccent : Colors.black,),
                   SizedBox(width: 10),
                   Text('В избранное')
                 ],

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class PdfRx extends StatefulWidget {
-  final File? file;
-
-  const PdfRx({Key? key, this.file}) : super(key: key);
+  final File file;
+  final String name;
+  const PdfRx({Key? key, required this.file, required this.name}) : super(key: key);
 
   @override
   State<PdfRx> createState() => _PDFScreenState();
@@ -31,13 +31,13 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
     // final text = '${pagesFirst} из $pagesLength';
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Document"),
+          title:  Text(widget.name,style: TextStyle(fontSize: 16),),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
                 Icons.zoom_in,
                 color: Colors.red,
-                size: 35,
+                size: 40,
               ),
               onPressed: () => controller.zoomUp(),
             ),
@@ -45,7 +45,7 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
               icon: const Icon(
                 Icons.zoom_out,
                 color: Colors.blue,
-                size: 30,
+                size: 40,
               ),
               onPressed: () => controller.zoomDown(),
             ),
@@ -62,7 +62,7 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
           ],
         ),
         body: PdfViewer.file(
-          widget.file!.path,
+          widget.file.path,
           controller: controller,
           params: PdfViewerParams(
               //  onPageChanged: ,

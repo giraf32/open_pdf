@@ -21,6 +21,7 @@ class PdfListItem extends StatelessWidget {
     File? file;
 
     return Card(
+      elevation: 3,
       color: Theme.of(context).cardColor,
       child: ListTile(
         subtitle: Text(pdfModel.dateTime.toString(),style: TextStyle(fontSize: 12),),
@@ -31,12 +32,14 @@ class PdfListItem extends StatelessWidget {
         // subtitle: Text('$dateCreateFile | $sizeFile'),
         onTap: () {
           file = File(pdfModel.path);
-          if (!file!.existsSync()) {
+          if (file == null) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Файл не найден')));
+          } else {
+            if (!context.mounted) return;
+            OpenPdfRx().openPDFRoute(context, file!, pdfModel.name);
           }
-          if (!context.mounted) return;
-          OpenPdfRx().openPDFRoute(context, file!);
+
         },
         trailing: context.read<ProviderPDF>().changeMenuItemFavourites
             ? MenuButtonFavourites(pdfModel: pdfModel)

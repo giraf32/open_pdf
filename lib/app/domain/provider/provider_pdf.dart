@@ -31,7 +31,7 @@ class ProviderPDF extends ChangeNotifier {
   Future<void> addListFilePdfFromStorage(BuildContext context) async {
     try {
       notifierState = NotifierState.loading;
-      final listPdfModelsStorage = await _pdfRepository.getPdfListStorage();
+      final listPdfModelsStorage = await _pdfRepository.getPdfListDeviceStorage();
 
       if (listPdfModelsStorage == null) {
         notifierState = NotifierState.loaded;

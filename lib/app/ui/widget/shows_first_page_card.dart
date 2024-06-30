@@ -7,7 +7,7 @@ class ShowsFirstPageCard extends StatelessWidget {
   final String filePath;
    ShowsFirstPageCard({super.key, required this.filePath});
   //final size = Size(40, 70);
- // final pages = PdfPage;
+  final pages = PdfPage;
   @override
   Widget build(BuildContext context) {
     // final document = PdfDocument.openFile(filePath);
@@ -25,13 +25,13 @@ class ShowsFirstPageCard extends StatelessWidget {
                 document: document,
                 pageNumber: 1,
                 alignment: Alignment.topCenter,
-              //  pageSizeCallback: v(Size(70, 40)) ,
+              //  pageSizeCallback: v(Size(70, 40),document!.pages[0]) ,
                 // maximumDpi: 200,
               ),
             ));
   }
 
-  v (Size size ) {
+  v (Size size,PdfPage page ) {
   // var pageHeight = page.height ;
   // var pageWidth = page.width ;
    var widgetHeight = size.height;
