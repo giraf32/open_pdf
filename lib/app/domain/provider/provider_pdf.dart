@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:open_pdf/app/data/db_app/db_services.dart';
+import 'package:open_pdf/app/data/db_app/db_services_pdf.dart';
 import 'package:open_pdf/app/data/db_app/init_db.dart';
 import 'package:open_pdf/app/data/repository/pdf_repository.dart';
-import 'package:open_pdf/app/domain/model/model_pdf.dart';
+import 'package:open_pdf/app/domain/model/pdf_model.dart';
 
+import '../../../utility/pdf_function.dart';
 import '../../ui/widget/show_alert_dialog_pdf.dart';
 
 enum NotifierState { initial, loading, loaded }
@@ -13,25 +13,20 @@ class ProviderPDF extends ChangeNotifier {
   ProviderPDF();
 
   NotifierState notifierState = NotifierState.initial;
-  final _pdfRepository = PdfRepository(dbServices: DbServices(InitDb.create()));
+  final _pdfRepository = PdfRepository(dbServicesPdf: DbServicesPdf(InitDb.create()));
   var pdfModelListHistory = <PdfModel?>[];
   var pdfListFavourites = <PdfModel?>[];
+  //----------folder------------
+
+//-------------------------------------
 
   bool changeMenuItemFavourites = false;
 
-  int? pages = 0;
-
-  setPages(int? value) {
-    pages = value;
-    notifyListeners();
-  }
-
-  int currentPage = 0;
-
-  Future<void> addListFilePdfFromStorage(BuildContext context) async {
+  Future<void> addListPdfFileFromDeviceStorage(BuildContext context) async {
     try {
       notifierState = NotifierState.loading;
-      final listPdfModelsStorage = await _pdfRepository.getPdfListDeviceStorage();
+      final listPdfModelsStorage =
+          await _pdfRepository.getPdfListDeviceStorage();
 
       if (listPdfModelsStorage == null) {
         notifierState = NotifierState.loaded;
@@ -41,7 +36,7 @@ class ProviderPDF extends ChangeNotifier {
       final pdfListModelDb =
           await _pdfRepository.getPdfListModelFromDbHistory();
 
-      final pdfModelClone =  _comparePdfModel(
+      final pdfModelClone = comparePdfModel(
           listFirst: listPdfModelsStorage, listSecond: pdfListModelDb);
       if (!context.mounted) return;
       if (pdfModelClone.isNotEmpty) await showAlertDialogPdf(context, pdfModelClone);
@@ -75,8 +70,8 @@ class ProviderPDF extends ChangeNotifier {
             _pdfRepository.deleteFilePdfAndModelDb(pdfModel: element!);
           })
         };
-     // await updatePdfListModelHistory();
-     // await updatePDFListModelFavourites();
+      // await updatePdfListModelHistory();
+      // await updatePDFListModelFavourites();
     } catch (e, s) {
       print('Error delete after compare: $e');
       print('Error delete after compare: $s');
@@ -111,7 +106,9 @@ class ProviderPDF extends ChangeNotifier {
       print('Error updatePdfListModelFavourites: $s');
     }
   }
+// ----------------- folder---------------
 
+//-----------------------------------------------------------------------
   Future<void> savePdfFavourites(
       PdfModel pdfModel, BuildContext context) async {
     try {
@@ -120,7 +117,7 @@ class ProviderPDF extends ChangeNotifier {
 
       if (pdfListFavorites.isNotEmpty) {
         final pdfListAddFavorites = <PdfModel>[]..add(pdfModel);
-        final pdfModelClone = await _comparePdfModel(
+        final pdfModelClone = await comparePdfModel(
             listFirst: pdfListAddFavorites, listSecond: pdfListFavorites);
         if (!context.mounted) return;
         if (pdfModelClone.isNotEmpty)
@@ -135,7 +132,7 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
-  Future<void> updatePdfNameFile(PdfModel newPdfModel) async {
+  Future<void> updatePdfModelDb(PdfModel newPdfModel) async {
     try {
       await _pdfRepository.updatePdfModel(pdfModel: newPdfModel);
       await updatePDFListModelFavourites();
@@ -146,20 +143,5 @@ class ProviderPDF extends ChangeNotifier {
     }
   }
 
-  List<PdfModel?> _comparePdfModel(
-      {required List<PdfModel> listFirst,
-      required List<PdfModel> listSecond})  {
-    var list = <PdfModel?>[];
 
-    listFirst.forEach((modelFirst) {
-      listSecond.forEach((modelSecond) {
-        if (modelSecond.name == modelFirst.name) {
-          list.add(modelSecond);
-        }
-      });
-    });
-    print('ListTest: $list');
-
-    return list;
-  }
 }

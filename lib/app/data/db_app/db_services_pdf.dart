@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:open_pdf/app/data/db_app/init_db.dart';
-import 'package:open_pdf/app/domain/db_api.dart';
+import 'package:open_pdf/app/domain/db_api_pdf.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../domain/model/model_pdf.dart';
+import '../../domain/model/pdf_model.dart';
 
-class DbServices implements DbApi {
+class DbServicesPdf implements DbApiPdf {
   final InitDb initDb;
 
-  DbServices(this.initDb);
+  DbServicesPdf(this.initDb);
 
   @override
   Future<void> insertPdfDb({required PdfModel pdfModel}) async {
@@ -31,6 +31,7 @@ class DbServices implements DbApi {
         favourites: pdfMaps[index]['favourites'],
         dateTime: pdfMaps[index]['dateTime'],
         size: pdfMaps[index]['size'],
+        folder: pdfMaps[index]['folder'],
       );
     });
   }

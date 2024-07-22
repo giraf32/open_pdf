@@ -9,7 +9,7 @@ import 'package:open_pdf/app/ui/widget/shows_first_page_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../route/open_pdf.dart';
-import '../../domain/model/model_pdf.dart';
+import '../../domain/model/pdf_model.dart';
 
 class PdfListItem extends StatelessWidget {
   PdfListItem({super.key, required this.pdfModel});
@@ -36,6 +36,7 @@ class PdfListItem extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Файл не найден')));
           } else {
+           // context.read<ProviderPDF>().appBarHide = false;
             if (!context.mounted) return;
             OpenPdfRx().openPDFRoute(context, file!, pdfModel.name);
           }

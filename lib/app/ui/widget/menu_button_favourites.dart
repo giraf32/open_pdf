@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../domain/model/model_pdf.dart';
+import '../../domain/model/pdf_model.dart';
 import '../../domain/provider/provider_pdf.dart';
 import 'change_name_file.dart';
 

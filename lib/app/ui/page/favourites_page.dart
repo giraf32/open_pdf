@@ -43,7 +43,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
               break;
             case 1:
-              context.read<ProviderPDF>().addListFilePdfFromStorage(context);
+              context.read<ProviderPDF>().addListPdfFileFromDeviceStorage(context);
 
               break;
             case 2:

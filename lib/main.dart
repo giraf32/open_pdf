@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/data/db_app/init_db.dart';
+import 'package:open_pdf/app/domain/provider/provider_folder.dart';
 import 'package:open_pdf/app/ui/page/home_page_pdf.dart';
 import 'package:provider/provider.dart';
 import 'app/domain/provider/provider_pdf.dart';
@@ -11,8 +12,15 @@ void main() async {
   await InitDb.create().database;
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ProviderPDF(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderPDF(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProviderFolder(),
+        )
+      ],
       child: const MyApp(),
     ),
   );
@@ -29,6 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<ProviderPDF>().updatePdfListModelHistory();
     context.read<ProviderPDF>().updatePDFListModelFavourites();
+    context.read<ProviderFolder>().updateListFolder();
 
     return MaterialApp(
       builder: (context, child) {
@@ -47,7 +56,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.red.shade300),
         primaryColor: Colors.red.shade600,
         scaffoldBackgroundColor: Colors.white,
-       // textTheme: TextTheme(),
+        // textTheme: TextTheme(),
         useMaterial3: true,
       ),
       home: const HomePagePdf(title: 'Open PDF'),

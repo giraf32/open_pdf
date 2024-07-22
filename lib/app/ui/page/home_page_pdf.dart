@@ -1,9 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
-import 'package:open_pdf/app/ui/widget/list_folder.dart';
+import 'package:open_pdf/app/ui/page/folder_page.dart';
 import 'package:open_pdf/app/ui/widget/pdf_list_history.dart';
 import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
+import 'package:open_pdf/route/open_pdf.dart';
 
 import 'package:provider/provider.dart';
 
@@ -21,11 +22,13 @@ class _HomePagePdfState extends State<HomePagePdf> {
  // bool position = true;
  // final listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
   int indexActive = 1;
+
   @override
   Widget build(BuildContext context) {
    // debugPrint('position $position');
     //TabStyle tabStyle = TabStyle.reactCircle;
    // TabController controller;
+
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: ConvexAppBar(
@@ -50,10 +53,10 @@ class _HomePagePdfState extends State<HomePagePdf> {
           onTap: (index) {
             switch (index) {
               case 0:
-                // context.read<ProviderPDF>().changeMenuItemFavourites = false;
+                OpenFolder().openPDFRoute(context);
                 setState(() {
-                  indexActive = 0;
-                  debugPrint('index0 $indexActive');
+                 // indexActive = 0;
+
                 });
                 break;
               case 1:
@@ -63,7 +66,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
                 });
                 break;
               case 2:
-                context.read<ProviderPDF>().addListFilePdfFromStorage(context);
+                context.read<ProviderPDF>().addListPdfFileFromDeviceStorage(context);
                 setState(() {
                   indexActive = 1;
                   debugPrint('index2 $indexActive');
@@ -80,6 +83,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
           },
         ),
         appBar: AppBar(
+          //automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             widget.title,
@@ -96,7 +100,7 @@ class _HomePagePdfState extends State<HomePagePdf> {
   }
 
   Widget getWidget(int index){
-    var listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
+    var listPdfPage = <Widget> [FolderPage(),PDFListHistory(),PDFListFavourites()];
     return listPdfPage[index];
   }
 }

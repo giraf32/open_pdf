@@ -3,23 +3,24 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:open_pdf/app/domain/db_api.dart';
+import 'package:open_pdf/app/domain/db_api_pdf.dart';
 import 'package:open_pdf/app/domain/pdf_api.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../domain/model/model_pdf.dart';
+import '../../../utility/pdf_function.dart';
+import '../../domain/model/pdf_model.dart';
 
 class PdfRepository implements PdfApi {
-  final DbApi dbServices;
+  final DbApiPdf dbServicesPdf;
 
   // late DateTime? dateTime;
 
-  PdfRepository({required this.dbServices});
+  PdfRepository({required this.dbServicesPdf});
 
   @override
   Future<void> insertDbListPdfModel({required List<PdfModel> listPdfModels})
   async {
       listPdfModels.forEach((pdfModel) async {
-      await  dbServices.insertPdfDb(pdfModel: pdfModel);
+      await  dbServicesPdf.insertPdfDb(pdfModel: pdfModel);
      });
 
 
@@ -30,7 +31,7 @@ class PdfRepository implements PdfApi {
 
   @override
   Future<void> deleteFilePdfAndModelDb({required PdfModel pdfModel}) async {
-    await dbServices.deletePdfDb(id: pdfModel.id);
+    await dbServicesPdf.deletePdfDb(id: pdfModel.id);
     var file = File(pdfModel.path);
     if (await file.exists()) {
       file.delete();
@@ -41,7 +42,7 @@ class PdfRepository implements PdfApi {
   @override
   Future<List<PdfModel>> getPdfListModelFromDbHistory() async {
     var localListPdfHistory = <PdfModel>[];
-    await dbServices.getPdfListDb().then((listModel) {
+    await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
         if (pdfModel.favourites == 0) {
           final id = pdfModel.id;
@@ -54,7 +55,7 @@ class PdfRepository implements PdfApi {
           }
         }
       });
-      if (localListPdfHistory.length > 1) localListPdfHistory = _sortListPdf(localListPdfHistory);
+      if (localListPdfHistory.length > 1) localListPdfHistory = sortListPdf(localListPdfHistory);
     });
     return localListPdfHistory;
   }
@@ -62,16 +63,17 @@ class PdfRepository implements PdfApi {
   @override
   Future<List<PdfModel>> getPdfListModelFromDbFavorite() async {
     var localListFavorite = <PdfModel>[];
-    await dbServices.getPdfListDb().then((listModel) {
+    await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
         if (pdfModel.favourites == 1) {
           var file = File(pdfModel.path);
           final id = pdfModel.id;
           print('idFavorite = $id');
           if (!file.existsSync())  deleteDbPdfModel(pdfModel: pdfModel);
+
           localListFavorite.add(pdfModel);
         }
-        if (localListFavorite.length > 1) localListFavorite = _sortListPdf(localListFavorite);
+        if (localListFavorite.length > 1) localListFavorite = sortListPdf(localListFavorite);
       });
     });
 
@@ -90,7 +92,6 @@ class PdfRepository implements PdfApi {
     }
     return null;
   }
-
   @override
   Future<void> savePdfModelFavouritesAppStorage({required PdfModel pdfModel}) async {
     final file = File(pdfModel.path);
@@ -100,9 +101,10 @@ class PdfRepository implements PdfApi {
       final favouritesFile = await file.copy(newFile.path);
       final name = pdfModel.name;
       final size = pdfModel.size;
+      final folder = 'history';
       // final id = name.hashCode + 1;
       final path = favouritesFile.path.toString();
-      final String formatDate = _formatterDate();
+      final String formatDate = formatterDate();
 
       final pdfModelFavourites = PdfModel(
           // id: id,
@@ -110,19 +112,21 @@ class PdfRepository implements PdfApi {
           name: name,
           favourites: 1,
           size: size,
-          dateTime: formatDate);
-      await dbServices.insertPdfDb(pdfModel: pdfModelFavourites);
+          dateTime: formatDate,
+          folder: folder
+      );
+      await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFavourites);
     }
   }
 
   @override
   Future<void> deleteDbPdfModel({required PdfModel pdfModel}) async {
-    await dbServices.deletePdfDb(id: pdfModel.id);
+    await dbServicesPdf.deletePdfDb(id: pdfModel.id);
   }
 
   @override
   Future<void> updatePdfModel({required PdfModel pdfModel}) async {
-    await dbServices.updatePdfDb(pdfModel: pdfModel);
+    await dbServicesPdf.updatePdfDb(pdfModel: pdfModel);
   }
 
   PdfModel _createPdfModel(PlatformFile platformFile) {
@@ -131,15 +135,18 @@ class PdfRepository implements PdfApi {
     // int id ;
     String path = platformFile.path.toString();
     String size = platformFile.size.toString();
-    final formatDate = _formatterDate();
+    String folder = 'folder';
+    final formatDate = formatterDate();
     final pdfModel = PdfModel(
        // id: id,
         path: path,
         name: name,
         favourites: 0,
         dateTime: formatDate,
-        size: size);
-    // await dbServices.insertPDF(pdfModel: pdfModel);
+        size: size,
+        folder: folder
+    );
+
     return pdfModel;
   }
 
@@ -147,34 +154,11 @@ class PdfRepository implements PdfApi {
     FilePicker.platform.clearTemporaryFiles();
   }
 
-  String _formatterDate() {
-    final dateTime = DateTime.now();
-    final DateFormat formatter = DateFormat.yMd().add_Hms();
-    final String formatDate = formatter.format(dateTime);
-    print('dataTime : $formatDate');
-    return formatDate;
-  }
 
-  List<PdfModel> _sortListPdf(List<PdfModel> list){
-    final DateFormat formatter = DateFormat.yMd().add_Hms();
 
-    bool Sorted = false;
-    while (!Sorted) {
-      Sorted = true;
-      for (int i = 1; list.length > i; i++) {
-        var dateTimeFirst = formatter.parse(list[i - 1].dateTime);
-        var dateTimeSecond = formatter.parse(list[i].dateTime);
-        if (dateTimeFirst.isBefore(dateTimeSecond)) {
-          var tmp = list[i];
-          list[i] = list[i - 1];
-          list[i - 1] = tmp;
-          Sorted = false;
-        }
-      }
-    }
 
-    return list;
-  }
+
+
 
 
 // Future<void> getDirectory() async {

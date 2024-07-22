@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/ui/page/favourites_page.dart';
+import 'package:open_pdf/app/ui/page/folder_page.dart';
 import 'package:open_pdf/app/ui/page/home_page_pdf.dart';
 import '../app/ui/viewer_pdf/pdf_rx.dart';
 
@@ -19,4 +20,8 @@ class OpenPdfScreenFavourites {
 class OpenPdfScreenHome {
   void openPDFRoute(BuildContext context) => Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => HomePagePdf(title: 'Home')));
+}
+class OpenFolder {
+  void openPDFRoute(BuildContext context) => Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => FolderPage()));
 }
