@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 
-import 'package:open_pdf/app/ui/widget/menu_button.dart';
-import 'package:open_pdf/app/ui/widget/menu_button_favourites.dart';
-import 'package:open_pdf/app/ui/widget/shows_first_page_card.dart';
+import 'package:open_pdf/app/ui/widget/widget_pdf_file/menu_button.dart';
+import 'package:open_pdf/app/ui/widget/widget_favourites/menu_button_favourites.dart';
+import 'package:open_pdf/app/ui/widget/widget_pdf_file/shows_first_page_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../route/open_pdf.dart';
-import '../../domain/model/pdf_model.dart';
+import '../../../../route/open_pdf.dart';
+import '../../../domain/model/pdf_model.dart';
 
 class PdfListItem extends StatelessWidget {
   PdfListItem({super.key, required this.pdfModel});

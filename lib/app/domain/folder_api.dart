@@ -4,8 +4,8 @@ import 'model/pdf_model.dart';
 
 abstract class FolderApi{
   Future<List<PdfModel>> getLisPdfModelByNameFolderFromDb({required String nameFolder});
-  Future<List<PdfModel>> getLisFolderFromDb();
-  Future<void> saveFileFolderAppStorage({required PdfModel pdfModel});
+  Future<List<PdfModel>> getLisFolderFromDb(String nameFolder);
+  Future<void> saveFileFolderAppStorage({required PdfModel pdfModel,required FolderModel folder});
   Future<void> insertFolder({required FolderModel folder});
   Future<void> updateFolder({required FolderModel folder});
   Future<List<FolderModel?>> getListFolder();

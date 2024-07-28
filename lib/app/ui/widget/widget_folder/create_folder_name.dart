@@ -3,14 +3,14 @@ import 'package:open_pdf/app/domain/model/folder_model.dart';
 import 'package:open_pdf/app/domain/provider/provider_folder.dart';
 import 'package:provider/provider.dart';
 
-class CreateFolder extends StatefulWidget {
-  const CreateFolder({super.key});
+class CreateFolderName extends StatefulWidget {
+  const CreateFolderName({super.key});
 
   @override
-  State<CreateFolder> createState() => _CreateFolderState();
+  State<CreateFolderName> createState() => _CreateFolderNameState();
 }
 
-class _CreateFolderState extends State<CreateFolder> {
+class _CreateFolderNameState extends State<CreateFolderName> {
   final myController = TextEditingController();
   late FolderModel folderModel;
 

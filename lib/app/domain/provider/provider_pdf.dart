@@ -5,7 +5,7 @@ import 'package:open_pdf/app/data/repository/pdf_repository.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
 
 import '../../../utility/pdf_function.dart';
-import '../../ui/widget/show_alert_dialog_pdf.dart';
+import '../../ui/widget/widget_pdf_file/show_alert_dialog_pdf.dart';
 
 enum NotifierState { initial, loading, loaded }
 

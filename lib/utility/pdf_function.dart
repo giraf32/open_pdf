@@ -1,4 +1,7 @@
 import 'package:intl/intl.dart';
+import '../app/app_const.dart';
+import '../app/domain/db_api_folder.dart';
+import '../app/domain/model/folder_model.dart';
 import '../app/domain/model/pdf_model.dart';
 
 String formatterDate() {
@@ -43,4 +46,15 @@ List<PdfModel?> comparePdfModel(
   print('ListTest: $list');
 
   return list;
+}
+
+Future<void> initFolderStart (DbApiFolder folder) async {
+  final listFolder = await folder.getListFolderDb();
+  if(listFolder.isEmpty){
+    final folderFavourites = FolderModel(nameFolder: nameFolderFavourites);
+    final folderHistory = FolderModel(nameFolder: nameFolderHistory);
+    await folder.insertFolderDb(folder: folderHistory);
+    await folder.insertFolderDb(folder: folderFavourites);
+  }
+
 }

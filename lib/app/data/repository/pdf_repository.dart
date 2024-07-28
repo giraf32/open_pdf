@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:open_pdf/app/app_const.dart';
 import 'package:open_pdf/app/domain/db_api_pdf.dart';
 import 'package:open_pdf/app/domain/pdf_api.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,10 +22,6 @@ class PdfRepository implements PdfApi {
       await  dbServicesPdf.insertPdfDb(pdfModel: pdfModel);
      });
 
-
-
-    //print('insertDbListPdfModel :  $listPdfModels');
-  //  print('nyListId :  $insertDbPdfModel');
   }
 
   @override
@@ -44,9 +39,9 @@ class PdfRepository implements PdfApi {
     var localListPdfHistory = <PdfModel>[];
     await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
-        if (pdfModel.favourites == 0) {
+        if (pdfModel.favourites == 0 && pdfModel.folder == nameFolderHistory) {
           final id = pdfModel.id;
-          print('id = $id');
+          print('idHistory = $id');
           var file = File(pdfModel.path);
           if (!file.existsSync()) {
             deleteDbPdfModel(pdfModel: pdfModel);
@@ -101,7 +96,7 @@ class PdfRepository implements PdfApi {
       final favouritesFile = await file.copy(newFile.path);
       final name = pdfModel.name;
       final size = pdfModel.size;
-      final folder = 'history';
+      final folder = nameFolderFavourites;
       // final id = name.hashCode + 1;
       final path = favouritesFile.path.toString();
       final String formatDate = formatterDate();
@@ -135,7 +130,7 @@ class PdfRepository implements PdfApi {
     // int id ;
     String path = platformFile.path.toString();
     String size = platformFile.size.toString();
-    String folder = 'folder';
+    String folder = nameFolderHistory;
     final formatDate = formatterDate();
     final pdfModel = PdfModel(
        // id: id,
@@ -154,19 +149,6 @@ class PdfRepository implements PdfApi {
     FilePicker.platform.clearTemporaryFiles();
   }
 
-
-
-
-
-
-
-
-// Future<void> getDirectory() async {
-//   String? selectedDirectory =  await FilePicker.platform.getDirectoryPath();
-//   if(selectedDirectory != null) {
-//     print('Выбранный путь:  $selectedDirectory');
-//   }
-//   }
 // static Future<File?> loadAsset(String path) async {
 //   final data = await rootBundle.load(path);
 //   final bytes = data.buffer.asInt8List();

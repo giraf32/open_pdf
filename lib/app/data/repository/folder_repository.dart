@@ -8,17 +8,18 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../utility/pdf_function.dart';
 
+
 class FolderRepository implements FolderApi{
   final DbApiPdf dbServicesPdf;
   final DbApiFolder dbServicesFolder;
 
   FolderRepository({required this.dbServicesFolder, required this.dbServicesPdf});
   @override
-  Future<List<PdfModel>> getLisFolderFromDb() async {
+  Future<List<PdfModel>> getLisFolderFromDb(String folderName) async {
     var localListFolder = <PdfModel>[];
     await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
-        if (pdfModel.folder == 'history') {
+        if (pdfModel.folder == folderName) {
           localListFolder.add(pdfModel);
         }
       });
@@ -48,14 +49,14 @@ class FolderRepository implements FolderApi{
     return localListFolder;
   }
   @override
-  Future<void> saveFileFolderAppStorage({required PdfModel pdfModel}) async{
+  Future<void> saveFileFolderAppStorage({required PdfModel pdfModel, required FolderModel folder}) async{
     final file = File(pdfModel.path);
     final appStorage = await getApplicationDocumentsDirectory();
-    final newFile = File('${appStorage.path}/${pdfModel.name}/${pdfModel.folder}');
+    final newFile = File('${appStorage.path}/${pdfModel.name}');
     if (await file.exists()) {
       final folderFile = await file.copy(newFile.path);
       final name = pdfModel.name;
-      final folder = pdfModel.folder;
+      final folderName = folder.nameFolder;
       final size = pdfModel.size;
       // final id = name.hashCode + 1;
       final path = folderFile.path.toString();
@@ -68,7 +69,7 @@ class FolderRepository implements FolderApi{
           favourites: 0,
           size: size,
           dateTime: formatDate,
-          folder: folder
+          folder: folderName
       );
       await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFolder);
     }
@@ -93,6 +94,15 @@ class FolderRepository implements FolderApi{
   Future<void> updateFolder({required FolderModel folder}) async {
     await dbServicesFolder.updateFolderDb(folder: folder);
   }
-
+// void initFolderStart () async {
+//     final listFolder = await getListFolder();
+//     if(listFolder.isEmpty){
+//       final folderFavourites = FolderModel(nameFolder: nameFolderFavourites);
+//       final folderHistory = FolderModel(nameFolder: nameFolderHistory);
+//       await insertFolder(folder: folderHistory);
+//       await insertFolder(folder: folderFavourites);
+//     }
+//
+// }
 
 }

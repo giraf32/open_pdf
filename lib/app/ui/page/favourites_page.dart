@@ -2,7 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 
-import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
+import 'package:open_pdf/app/ui/widget/widget_favourites/pdf_list_favourites.dart';
 import 'package:open_pdf/route/open_pdf.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +20,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('position $position');
-    // context.read<ProviderPDF>().updatePDFListModel();
-    // context.read<ProviderPDF>().updatePDFListModelFavourites();
+
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

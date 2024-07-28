@@ -1,16 +1,19 @@
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_folder.dart';
-
-import 'package:open_pdf/app/ui/widget/animated_text.dart';
-import 'package:open_pdf/app/ui/widget/create_folder.dart';
-import 'package:open_pdf/app/ui/widget/folder_viewer.dart';
+import 'package:open_pdf/app/ui/widget/widget_folder/animated_text_folder.dart';
+import 'package:open_pdf/app/ui/widget/widget_folder/create_folder_name.dart';
+import 'package:open_pdf/app/ui/widget/widget_folder/folder_viewer.dart';
 import 'package:provider/provider.dart';
+
+
 
 class FolderPage extends StatelessWidget {
   FolderPage({super.key});
 
- // final int _indexActive = 0;
+
+  final int _indexActive = 0;
   final String _title = 'Папки';
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
@@ -27,61 +30,57 @@ class FolderPage extends StatelessWidget {
             this
                 ._globalKey
                 .currentState
-                ?.showBottomSheet(backgroundColor: Theme.of(context).cardColor , (c) => CreateFolder());
+                ?.showBottomSheet(backgroundColor: Theme.of(context).cardColor , (c) => CreateFolderName());
           },
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // bottomNavigationBar: ConvexAppBar(
-        //   // controller: controller ,
-        //   style: TabStyle.reactCircle,
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   initialActiveIndex: _indexActive,
-        //   // curveSize: 80,
-        //   // height: 80,
-        //   top: -16,
-        //   items: const [
-        //     //    TabItem(title: 'Дом', icon: Icons.home),
-        //     //   TabItem(title: 'Просмотренные', icon: Icons.access_time_outlined),
-        //     //   TabItem(title: 'Найти файл', icon: Icons.add),
-        //     //   TabItem(title: 'Избранные', icon: Icons.favorite),
-        //     TabItem(icon: Icons.folder),
-        //     TabItem(icon: Icons.access_time_outlined),
-        //     TabItem(icon: Icons.add),
-        //     TabItem(icon: Icons.favorite),
-        //   ],
-        //   onTap: (index) {
-        //     switch (index) {
-        //       case 0:
-        //         // context.read<ProviderPDF>().changeMenuItemFavourites = false;
-        //         //   setState(() {
-        //         //     indexActive = 0;
-        //         //     debugPrint('index0 $indexActive');
-        //         //   });
-        //         break;
-        //       case 1:
-        //         // setState(() {
-        //         //   indexActive = 1;
-        //         //   debugPrint('index1 $indexActive');
-        //         // });
-        //         break;
-        //       case 2:
-        //
-        //         // context.read<ProviderPDF>().addListPdfFileFromDeviceStorage(context);
-        //         // setState(() {
-        //         //   indexActive = 1;
-        //         //   debugPrint('index2 $indexActive');
-        //         // });
-        //         break;
-        //       case 3:
-        //         // OpenPdfScreenFavourites().openPDFRoute(context);
-        //         //   setState(() {
-        //         //     indexActive = 2;
-        //         //     debugPrint('index3 $indexActive');
-        //         //   });
-        //         break;
-        //     }
-        //   },
-        // ),
+        bottomNavigationBar: ConvexAppBar(
+          // controller: controller ,
+          style: TabStyle.reactCircle,
+          backgroundColor: Theme.of(context).primaryColor,
+          initialActiveIndex: _indexActive,
+          // curveSize: 80,
+          // height: 80,
+          top: -16,
+          items: const [
+            TabItem(icon: Icons.folder),
+            TabItem(icon: Icons.access_time_outlined),
+            TabItem(icon: Icons.add),
+            TabItem(icon: Icons.favorite),
+          ],
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                // context.read<ProviderPDF>().changeMenuItemFavourites = false;
+                //   setState(() {
+                //     indexActive = 0;
+                //     debugPrint('index0 $indexActive');
+                //   });
+                break;
+              case 1:
+                // setState(() {
+                //   indexActive = 1;
+                //   debugPrint('index1 $indexActive');
+                // });
+                break;
+              case 2:
+
+                // context.read<ProviderPDF>().addListPdfFileFromDeviceStorage(context);
+                // setState(() {
+                //   indexActive = 1;
+                //   debugPrint('index2 $indexActive');
+                // });
+                break;
+              case 3:
+                // OpenPdfScreenFavourites().openPDFRoute(context);
+                //   setState(() {
+                //     indexActive = 2;
+                //     debugPrint('index3 $indexActive');
+                //   });
+                break;
+            }
+          },
+        ),
         appBar: AppBar(
           //automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
@@ -92,13 +91,13 @@ class FolderPage extends StatelessWidget {
         ),
         body: listFolders.isNotEmpty
             ? GridView.count(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(16),
                 crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 20,
                 children: listFolders
-                    .map((e) => FolderViewer(nameFolder: e!))
+                    .map((e) => FolderViewer(folderModel: e!))
                     .toList())
-            : AnimatedText());
+            : AnimatedTextFolder());
   }
 }

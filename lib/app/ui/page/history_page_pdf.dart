@@ -2,32 +2,31 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:open_pdf/app/ui/page/folder_page.dart';
-import 'package:open_pdf/app/ui/widget/pdf_list_history.dart';
-import 'package:open_pdf/app/ui/widget/pdf_list_favourites.dart';
+import 'package:open_pdf/app/ui/widget/widget_history/pdf_list_history.dart';
+import 'package:open_pdf/app/ui/widget/widget_favourites/pdf_list_favourites.dart';
 import 'package:open_pdf/route/open_pdf.dart';
 
 import 'package:provider/provider.dart';
 
-class HomePagePdf extends StatefulWidget {
-  const HomePagePdf({super.key, required this.title});
+
+class HistoryPagePdf extends StatefulWidget {
+  const HistoryPagePdf({super.key, required this.title});
 
   final String title;
 
 
   @override
-  State<HomePagePdf> createState() => _HomePagePdfState();
+  State<HistoryPagePdf> createState() => _HistoryPagePdfState();
 }
 
-class _HomePagePdfState extends State<HomePagePdf> {
- // bool position = true;
- // final listPdfPage = <Widget> [ListFolder(),PDFListHistory(),PDFListFavourites()];
+class _HistoryPagePdfState extends State<HistoryPagePdf> {
   int indexActive = 1;
+
 
   @override
   Widget build(BuildContext context) {
-   // debugPrint('position $position');
-    //TabStyle tabStyle = TabStyle.reactCircle;
-   // TabController controller;
+
+   // context.read<ProviderPDF>().updatePdfListModelHistory();
 
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -56,7 +55,6 @@ class _HomePagePdfState extends State<HomePagePdf> {
                 OpenFolder().openPDFRoute(context);
                 setState(() {
                  // indexActive = 0;
-
                 });
                 break;
               case 1:

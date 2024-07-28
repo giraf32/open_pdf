@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/provider/provider_pdf.dart';
+import '../../../domain/provider/provider_pdf.dart';
 
 Future<void> showAlertDialogPdf(
     BuildContext context, List<PdfModel?> listPdf) async {

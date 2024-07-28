@@ -7,10 +7,12 @@ import '../../../utility/pdf_function.dart';
 import '../../data/db_app/db_services_pdf.dart';
 import '../../data/db_app/init_db.dart';
 
-import '../../ui/widget/show_alert_dialog_pdf.dart';
+import '../../ui/widget/widget_pdf_file/show_alert_dialog_pdf.dart';
 import '../model/pdf_model.dart';
 
-enum NotifierState { initial, loading, loaded }
+enum NotifierStateFolder { initial, loading, loaded }
+enum NotifierStateListPdfFolder { initial, loading, loaded }
+enum NotifierStateTab { show, add, menu }
 
 class ProviderFolder extends ChangeNotifier {
   ProviderFolder();
@@ -18,11 +20,16 @@ class ProviderFolder extends ChangeNotifier {
   final _folderRepository = FolderRepository(dbServicesPdf: DbServicesPdf(InitDb.create()),
       dbServicesFolder: DbServicesFolder(InitDb.create()));
 
-  NotifierState notifierState = NotifierState.initial;
+
+
+  NotifierStateFolder notifierStateFolder = NotifierStateFolder.initial;
+  NotifierStateListPdfFolder notifierStateListPdfFolder = NotifierStateListPdfFolder.initial;
+  NotifierStateTab notifierStateTab = NotifierStateTab.show;
 
   var listFolder = <FolderModel?>[];
+  var listPdfFileByNameFolder = <PdfModel?>[];
 
-  var listFolderByName = <PdfModel?>[];
+
   var _listFolderName = <String?>[];
   List<String?> getListFolderName() => _listFolderName;
   void setListFolderName(String value) {
@@ -30,16 +37,24 @@ class ProviderFolder extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setNotifierStateTab (String state){
+    switch(state){
+      case 'show': notifierStateTab = NotifierStateTab.show;
+      case 'add': notifierStateTab = NotifierStateTab.add;
+      case 'menu': notifierStateTab = NotifierStateTab.menu;
+    }
+  }
+
   Future<void> updateListFolder() async {
     try {
-      notifierState = NotifierState.loading;
+      notifierStateFolder = NotifierStateFolder.loading;
 
       listFolder = await _folderRepository.getListFolder();
     } catch (e, s) {
       print('Error updateListFolder: $e');
       print('Error updateListFolder: $s');
     }
-    notifierState = NotifierState.loaded;
+    notifierStateFolder = NotifierStateFolder.loaded;
     notifyListeners();
   }
 
@@ -71,25 +86,27 @@ class ProviderFolder extends ChangeNotifier {
     }
     updateListFolder();
   }
-
+//----------------------- on File Folder -------------
   Future<void> updateListFolderByName(String nameFolder) async {
     try {
-      notifierState = NotifierState.loading;
+      notifierStateListPdfFolder = NotifierStateListPdfFolder.loading;
 
-      listFolderByName = await _folderRepository.getLisPdfModelByNameFolderFromDb(nameFolder: nameFolder);
+      listPdfFileByNameFolder = await _folderRepository.getLisPdfModelByNameFolderFromDb(nameFolder: nameFolder);
     } catch (e, s) {
       print('Error updateListFolderByName: $e');
       print('Error updateListFolderByName: $s');
     }
-    notifierState = NotifierState.loaded;
+    notifierStateListPdfFolder = NotifierStateListPdfFolder.loaded;
     notifyListeners();
   }
 
   Future<void> saveFileFolder(
-      PdfModel pdfModel, BuildContext context) async {
+      PdfModel pdfModel, BuildContext context, FolderModel folderModel) async {
     try {
+      print('nameFolder : $folderModel');
+      print('pdfModel : $pdfModel');
       final listFolder =
-      await _folderRepository.getLisFolderFromDb();
+      await _folderRepository.getLisPdfModelByNameFolderFromDb(nameFolder: folderModel.nameFolder);
 
       if (listFolder.isNotEmpty) {
         final pdfListAddFolder = <PdfModel>[]..add(pdfModel);
@@ -100,8 +117,8 @@ class ProviderFolder extends ChangeNotifier {
         if (pdfModelClone.isNotEmpty)
           await showAlertDialogPdf(context, pdfModelClone);
       }
-      await _folderRepository.saveFileFolderAppStorage(pdfModel: pdfModel);
-      await updateListFolder();
+      await _folderRepository.saveFileFolderAppStorage(pdfModel: pdfModel, folder: folderModel);
+      await updateListFolderByName(folderModel.nameFolder);
     } catch (e, s) {
       print('Error savePdfFavourites: $e');
       print('Error savePdfFavourites: $s');
