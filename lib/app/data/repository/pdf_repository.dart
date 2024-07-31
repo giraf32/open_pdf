@@ -6,6 +6,7 @@ import 'package:open_pdf/app/domain/db_api_pdf.dart';
 import 'package:open_pdf/app/domain/pdf_api.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../utility/pdf_function.dart';
+import '../../domain/model/folder_model.dart';
 import '../../domain/model/pdf_model.dart';
 
 class PdfRepository implements PdfApi {
@@ -54,26 +55,71 @@ class PdfRepository implements PdfApi {
     });
     return localListPdfHistory;
   }
-
+  //------------------Folder-------------------
   @override
-  Future<List<PdfModel>> getPdfListModelFromDbFavorite() async {
-    var localListFavorite = <PdfModel>[];
+  Future<List<PdfModel>> getLisPdfByNameFolderFromDb({required String nameFolder}) async{
+    //TODO null folder
+    var localListFolder = <PdfModel>[];
     await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
-        if (pdfModel.favourites == 1) {
+        if (pdfModel.folder == nameFolder) {
           var file = File(pdfModel.path);
-          final id = pdfModel.id;
-          print('idFavorite = $id');
-          if (!file.existsSync())  deleteDbPdfModel(pdfModel: pdfModel);
-
-          localListFavorite.add(pdfModel);
+          // final id = pdfModel.id;
+          // print('idFolder = $id');
+          if (!file.existsSync())  dbServicesPdf.deletePdfDb(id: pdfModel.id);
+          localListFolder.add(pdfModel);
         }
-        if (localListFavorite.length > 1) localListFavorite = sortListPdf(localListFavorite);
+        if (localListFolder.length > 1) localListFolder = sortListPdf(localListFolder);
       });
     });
 
-    return localListFavorite;
+    return localListFolder;
   }
+  @override
+  Future<void> saveFileFolderAppStorage({required PdfModel pdfModel, required FolderModel folder}) async{
+    final file = File(pdfModel.path);
+    final appStorage = await getApplicationDocumentsDirectory();
+    final newFile = File('${appStorage.path}/${pdfModel.name}');
+    if (await file.exists()) {
+      final folderFile = await file.copy(newFile.path);
+      final name = pdfModel.name;
+      final folderName = folder.nameFolder;
+      final size = pdfModel.size;
+      // final id = name.hashCode + 1;
+      final path = folderFile.path.toString();
+      final String formatDate = formatterDate();
+
+      final pdfModelFolder = PdfModel(
+        // id: id,
+          path: path,
+          name: name,
+          favourites: 0,
+          size: size,
+          dateTime: formatDate,
+          folder: folderName
+      );
+      await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFolder);
+    }
+  }
+  @override
+  Future<void> deletePdfModelByNameFolderFromDb({required String nameFolder}) async {
+    await dbServicesPdf.getPdfListDb().then((listModel) {
+      listModel.forEach((pdfModel)  {
+        if (pdfModel.folder == nameFolder){
+          dbServicesPdf.deletePdfDb(id: pdfModel.id);
+          var file = File(pdfModel.path);
+          final id = pdfModel.id;
+          print('idFolder = $id');
+          if (file.existsSync()) {
+            file.delete();
+          }
+        }
+      });
+    });
+  }
+
+  //--------------------Folder End---------------
+
 
   @override
   Future<List<PdfModel>?> getPdfListDeviceStorage() async {
@@ -87,32 +133,7 @@ class PdfRepository implements PdfApi {
     }
     return null;
   }
-  @override
-  Future<void> savePdfModelFavouritesAppStorage({required PdfModel pdfModel}) async {
-    final file = File(pdfModel.path);
-    final appStorage = await getApplicationDocumentsDirectory();
-    final newFile = File('${appStorage.path}/${pdfModel.name}');
-    if (await file.exists()) {
-      final favouritesFile = await file.copy(newFile.path);
-      final name = pdfModel.name;
-      final size = pdfModel.size;
-      final folder = nameFolderFavourites;
-      // final id = name.hashCode + 1;
-      final path = favouritesFile.path.toString();
-      final String formatDate = formatterDate();
 
-      final pdfModelFavourites = PdfModel(
-          // id: id,
-          path: path,
-          name: name,
-          favourites: 1,
-          size: size,
-          dateTime: formatDate,
-          folder: folder
-      );
-      await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFavourites);
-    }
-  }
 
   @override
   Future<void> deleteDbPdfModel({required PdfModel pdfModel}) async {
@@ -162,4 +183,54 @@ class PdfRepository implements PdfApi {
 //   await file.writeAsBytes(bytes, flush: true);
 //   return file;
 // }
+//-----------------Favourites----------
+
+// @override
+// Future<List<PdfModel>> getPdfListModelFromDbFavorite() async {
+//   var localListFavorite = <PdfModel>[];
+//   await dbServicesPdf.getPdfListDb().then((listModel) {
+//     listModel.forEach((pdfModel) {
+//       if (pdfModel.favourites == 1) {
+//         var file = File(pdfModel.path);
+//         final id = pdfModel.id;
+//         print('idFavorite = $id');
+//         if (!file.existsSync())  deleteDbPdfModel(pdfModel: pdfModel);
+//
+//         localListFavorite.add(pdfModel);
+//       }
+//       if (localListFavorite.length > 1) localListFavorite = sortListPdf(localListFavorite);
+//     });
+//   });
+//
+//   return localListFavorite;
+// }
+// @override
+// Future<void> savePdfModelFavouritesAppStorage({required PdfModel pdfModel}) async {
+//   final file = File(pdfModel.path);
+//   final appStorage = await getApplicationDocumentsDirectory();
+//   final newFile = File('${appStorage.path}/${pdfModel.name}');
+//   if (await file.exists()) {
+//     final favouritesFile = await file.copy(newFile.path);
+//     final name = pdfModel.name;
+//     final size = pdfModel.size;
+//     final folder = nameFolderFavourites;
+//     // final id = name.hashCode + 1;
+//     final path = favouritesFile.path.toString();
+//     final String formatDate = formatterDate();
+//
+//     final pdfModelFavourites = PdfModel(
+//         // id: id,
+//         path: path,
+//         name: name,
+//         favourites: 1,
+//         size: size,
+//         dateTime: formatDate,
+//         folder: folder
+//     );
+//     await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFavourites);
+//   }
+// }
+
+
+
 }

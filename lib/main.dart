@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<ProviderPDF>().updatePdfListModelHistory();
-    context.read<ProviderPDF>().updatePDFListModelFavourites();
+   // context.read<ProviderPDF>().updatePDFListModelFavourites();
     context.read<ProviderFolder>().updateListFolder();
 
     return MaterialApp(

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
+import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/model/folder_model.dart';
-import '../../../domain/provider/provider_folder.dart';
+
 
 class FolderItemAddPdf extends StatelessWidget {
   const FolderItemAddPdf({super.key, required this.folderModel, required this.pdfModel});
@@ -20,7 +21,7 @@ class FolderItemAddPdf extends StatelessWidget {
       title: Text(folderModel.nameFolder),
       onTap: (){
         //TODO colors
-        context.read<ProviderFolder>().saveFileFolder(pdfModel, context, folderModel);
+        context.read<ProviderPDF>().saveFileFolder(pdfModel, context, folderModel);
         Navigator.pop(context);
       },
     );

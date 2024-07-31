@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/model/folder_model.dart';
@@ -14,6 +15,9 @@ class DeleteRenameFolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final folderName = folderModel.nameFolder;
+    final providerPdf = context.read<ProviderPDF>();
+    final providerFolder = context.read<ProviderFolder>();
+  //  final deletePdf = context.watch<ProviderFolder>().notifierDeletePdfFolder;
     return Container(
        // color: Colors.white,
         height: 200,
@@ -32,8 +36,9 @@ class DeleteRenameFolder extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                    onPressed: () {
-                      context.read<ProviderFolder>().deleteFolder(id);
+                    onPressed: () async {
+                      await providerPdf.deletePdfFromFolder(folderName);
+                      await providerFolder.deleteFolder(id);
                       Navigator.pop(context);
                       //TODO delete pdf file from Folder
                     },

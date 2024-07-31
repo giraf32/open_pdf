@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
-import 'package:open_pdf/app/domain/provider/provider_folder.dart';
-import 'package:open_pdf/app/ui/widget/widget_pdf_file/folder_item_add_pdf.dart';
 import 'package:open_pdf/app/ui/widget/widget_pdf_file/list_folder_add_pdf.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -38,31 +36,31 @@ class MenuButton extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuItem(
-              padding: const EdgeInsets.all(5.0),
-              onTap: () {
-                context
-                    .read<ProviderPDF>()
-                    .savePdfFavourites(pdfModel, context);
-
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Файл добавлен в избранное'),
-                  behavior: SnackBarBehavior.floating,
-                ));
-              },
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.favorite,
-                    color: pdfModel.favourites == 1
-                        ? Colors.redAccent
-                        : Colors.black,
-                  ),
-                  SizedBox(width: 10),
-                  Text('В избранное')
-                ],
-              ),
-            ),
+            // PopupMenuItem(
+            //   padding: const EdgeInsets.all(5.0),
+            //   onTap: () {
+            //     context
+            //         .read<ProviderPDF>()
+            //         .savePdfFavourites(pdfModel, context);
+            //
+            //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            //       content: Text('Файл добавлен в избранное'),
+            //       behavior: SnackBarBehavior.floating,
+            //     ));
+            //   },
+            //   child: Row(
+            //     children: [
+            //       Icon(
+            //         Icons.favorite,
+            //         color: pdfModel.favourites == 1
+            //             ? Colors.redAccent
+            //             : Colors.black,
+            //       ),
+            //       SizedBox(width: 10),
+            //       Text('В избранное')
+            //     ],
+            //   ),
+            // ),
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {

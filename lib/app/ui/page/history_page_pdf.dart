@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:open_pdf/app/ui/page/folder_page.dart';
 import 'package:open_pdf/app/ui/widget/widget_history/pdf_list_history.dart';
-import 'package:open_pdf/app/ui/widget/widget_favourites/pdf_list_favourites.dart';
 import 'package:open_pdf/route/open_pdf.dart';
 
 import 'package:provider/provider.dart';
@@ -46,7 +45,7 @@ class _HistoryPagePdfState extends State<HistoryPagePdf> {
             TabItem(icon: Icons.folder),
             TabItem(icon: Icons.access_time_outlined),
             TabItem(icon: Icons.add),
-            TabItem(icon: Icons.favorite),
+           // TabItem(icon: Icons.favorite),
 
           ],
           onTap: (index) {
@@ -70,13 +69,13 @@ class _HistoryPagePdfState extends State<HistoryPagePdf> {
                   debugPrint('index2 $indexActive');
                 });
                 break;
-              case 3:
+            //  case 3:
                // OpenPdfScreenFavourites().openPDFRoute(context);
-                setState(() {
-                  indexActive = 2;
-                  debugPrint('index3 $indexActive');
-                });
-                break;
+               //  setState(() {
+               //    indexActive = 2;
+               //    debugPrint('index3 $indexActive');
+               //  });
+            //    break;
             }
           },
         ),
@@ -98,7 +97,7 @@ class _HistoryPagePdfState extends State<HistoryPagePdf> {
   }
 
   Widget getWidget(int index){
-    var listPdfPage = <Widget> [FolderPage(),PDFListHistory(),PDFListFavourites()];
+    var listPdfPage = <Widget> [FolderPage(),PDFListHistory()];
     return listPdfPage[index];
   }
 }

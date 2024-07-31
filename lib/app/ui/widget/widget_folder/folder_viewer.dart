@@ -4,6 +4,9 @@ import 'package:open_pdf/app/ui/widget/widget_folder/delete_rename_folder.dart';
 import 'package:open_pdf/route/open_pdf.dart';
 
 
+
+
+
 class FolderViewer extends StatelessWidget {
    FolderViewer({super.key, required this.folderModel}) : _id = folderModel.id ;
 
@@ -12,6 +15,7 @@ class FolderViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var state = context.watch<ProviderFolder>().notifierStateTab;
+    //final deletePdf = context.watch<ProviderFolder>().notifierDeletePdfFolder;
     return ListTile(
      // leading:
       subtitle: Text(folderModel.nameFolder,
