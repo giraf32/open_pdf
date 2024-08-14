@@ -12,7 +12,7 @@ String formatterDate() {
   return formatDate;
 }
 
-List<PdfModel> sortListPdf(List<PdfModel> list){
+List<PdfModel> sortListPdf(List<PdfModel> list) {
   final DateFormat formatter = DateFormat.yMd().add_Hms();
 
   bool Sorted = false;
@@ -32,6 +32,7 @@ List<PdfModel> sortListPdf(List<PdfModel> list){
 
   return list;
 }
+
 List<PdfModel?> comparePdfModel(
     {required List<PdfModel> listFirst, required List<PdfModel> listSecond}) {
   var list = <PdfModel?>[];
@@ -48,13 +49,24 @@ List<PdfModel?> comparePdfModel(
   return list;
 }
 
-Future<void> initFolderStart (DbApiFolder folder) async {
-  final listFolder = await folder.getListFolderDb();
-  if(listFolder.isEmpty){
-    final folderFavourites = FolderModel(nameFolder: nameFolderFavourites);
-    final folderHistory = FolderModel(nameFolder: nameFolderHistory);
-    await folder.insertFolderDb(folder: folderHistory);
-    await folder.insertFolderDb(folder: folderFavourites);
-  }
-
+Future<void> initFolderStart(DbApiFolder folder) async {
+  // final listFolder =
+  await folder.getListFolderDb().then((listFolder) async {
+    if (listFolder.isEmpty) {
+      final folderHistory = FolderModel(nameFolder: nameFolderHistory);
+      await folder.insertFolderDb(folder: folderHistory);
+    }
+    // else {
+    //   var isName = false;
+    //   listFolder.forEach((folderModel) {
+    //     if (folderModel!.nameFolder == nameFolderHistory) {
+    //       isName = true;
+    //     }
+    //   });
+    //   if (!isName) {
+    //     final folderHistory = FolderModel(nameFolder: nameFolderHistory);
+    //     await folder.insertFolderDb(folder: folderHistory);
+    //   }
+    // }
+  });
 }

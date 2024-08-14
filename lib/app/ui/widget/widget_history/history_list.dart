@@ -1,11 +1,13 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
 import 'package:open_pdf/app/ui/widget/widget_history/animated_text.dart';
 import 'package:open_pdf/app/ui/widget/widget_pdf_file/pdf_list_item.dart';
 import 'package:provider/provider.dart';
 
-class PDFListHistory extends StatelessWidget {
-  const PDFListHistory({super.key});
+@RoutePage()
+class HistoryList extends StatelessWidget {
+  const HistoryList({super.key});
 
   @override
   Widget build(BuildContext context) {

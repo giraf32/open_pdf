@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
 
+@RoutePage()
 class PdfRx extends StatefulWidget {
   final File file;
   final String name;
@@ -111,7 +113,7 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
                 );
               }
             },
-              viewerOverlayBuilder: (context, size) => [
+              viewerOverlayBuilder: (context, size, handleLinkTap) => [
                     PdfViewerScrollThumb(
                       controller: controller,
                       orientation: ScrollbarOrientation.right,
@@ -146,7 +148,8 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
                         ),
                       ),
                     ),
-                  ]),
+                     ]
+          ),
         ));
   }
 }

@@ -1,12 +1,9 @@
 
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:open_pdf/app/domain/provider/provider_folder.dart';
-import 'package:open_pdf/app/ui/widget/widget_folder/animated_text_folder.dart';
 import 'package:open_pdf/app/ui/widget/widget_folder/create_folder_name.dart';
 import 'package:open_pdf/app/ui/widget/widget_folder/folder_list.dart';
-import 'package:open_pdf/app/ui/widget/widget_folder/folder_viewer.dart';
-import 'package:provider/provider.dart';
 
 
 
@@ -20,8 +17,6 @@ class FolderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var listFolders = context.watch<ProviderFolder>().listFolder;
-    // var deletePdf = context.watch<ProviderFolder>().notifierDeletePdfFolder;
      return Scaffold(
         key: _globalKey,
         floatingActionButton: FloatingActionButton(
@@ -92,22 +87,7 @@ class FolderPage extends StatelessWidget {
         ),
         body: FolderList()
 
-
-
-
-
-        // listFolders.isNotEmpty
-        //     ? GridView.count(
-        //         padding: const EdgeInsets.all(16),
-        //         crossAxisCount: 2,
-        //         mainAxisSpacing: 0,
-        //         crossAxisSpacing: 20,
-        //         children: listFolders
-        //             .map((e) => FolderViewer(folderModel: e!))
-        //             .toList())
-        //     : AnimatedTextFolder()
-
-    );
+     );
 
   }
 }

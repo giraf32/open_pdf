@@ -23,6 +23,7 @@ class DeleteRenameFolder extends StatelessWidget {
         height: 200,
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
+            color: Colors.grey.shade300,
             border: Border.all(color: Colors.red, width: 2.0),
             borderRadius: BorderRadius.circular(18.0)),
         child: Column(
@@ -36,6 +37,7 @@ class DeleteRenameFolder extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
+                    //style: ButtonStyle(),
                     onPressed: () async {
                       await providerPdf.deletePdfFromFolder(folderName);
                       await providerFolder.deleteFolder(id);
