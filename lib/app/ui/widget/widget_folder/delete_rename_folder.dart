@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
+import 'package:open_pdf/app/ui/widget/widget_folder/change_folder_name.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/model/folder_model.dart';
@@ -17,15 +18,13 @@ class DeleteRenameFolder extends StatelessWidget {
     final folderName = folderModel.nameFolder;
     final providerPdf = context.read<ProviderPDF>();
     final providerFolder = context.read<ProviderFolder>();
-  //  final deletePdf = context.watch<ProviderFolder>().notifierDeletePdfFolder;
     return Container(
-       // color: Colors.white,
         height: 200,
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             color: Colors.grey.shade300,
             border: Border.all(color: Colors.red, width: 2.0),
-            borderRadius: BorderRadius.circular(18.0)),
+            borderRadius: BorderRadius.circular(10.0)),
         child: Column(
           children: [
             Text(
@@ -37,7 +36,6 @@ class DeleteRenameFolder extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                    //style: ButtonStyle(),
                     onPressed: () async {
                       await providerPdf.deletePdfFromFolder(folderName);
                       await providerFolder.deleteFolder(id);
@@ -47,7 +45,14 @@ class DeleteRenameFolder extends StatelessWidget {
                     child: Text('Удалить',
                         style: TextStyle(fontSize: 18, color: Colors.red))),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showBottomSheet(
+                          backgroundColor: Colors.grey.shade300,
+                          context: context,
+                          builder: (context) =>
+                              ChangeFolderName(folderModel: folderModel));
+                    },
                     child: Text('Переименовать',
                         style: TextStyle(fontSize: 18, color: Colors.black))),
               ],

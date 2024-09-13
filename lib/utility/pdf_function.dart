@@ -1,3 +1,5 @@
+
+
 import 'package:intl/intl.dart';
 import '../app/app_const.dart';
 import '../app/domain/db_api_folder.dart';
@@ -12,15 +14,15 @@ String formatterDate() {
   return formatDate;
 }
 
-List<PdfModel> sortListPdf(List<PdfModel> list) {
+List<PdfModel?> sortListPdf(List<PdfModel?> list) {
   final DateFormat formatter = DateFormat.yMd().add_Hms();
 
   bool Sorted = false;
   while (!Sorted) {
     Sorted = true;
     for (int i = 1; list.length > i; i++) {
-      var dateTimeFirst = formatter.parse(list[i - 1].dateTime);
-      var dateTimeSecond = formatter.parse(list[i].dateTime);
+      var dateTimeFirst = formatter.parse(list[i - 1]!.dateTime);
+      var dateTimeSecond = formatter.parse(list[i]!.dateTime);
       if (dateTimeFirst.isBefore(dateTimeSecond)) {
         var tmp = list[i];
         list[i] = list[i - 1];
@@ -34,12 +36,12 @@ List<PdfModel> sortListPdf(List<PdfModel> list) {
 }
 
 List<PdfModel?> comparePdfModel(
-    {required List<PdfModel> listFirst, required List<PdfModel> listSecond}) {
+    {required List<PdfModel?> listFirst, required List<PdfModel?> listSecond}) {
   var list = <PdfModel?>[];
 
   listFirst.forEach((modelFirst) {
     listSecond.forEach((modelSecond) {
-      if (modelSecond.name == modelFirst.name) {
+      if (modelSecond?.name == modelFirst?.name) {
         list.add(modelSecond);
       }
     });
@@ -53,7 +55,7 @@ Future<void> initFolderStart(DbApiFolder folder) async {
   // final listFolder =
   await folder.getListFolderDb().then((listFolder) async {
     if (listFolder.isEmpty) {
-      final folderHistory = FolderModel(nameFolder: nameFolderHistory);
+      final folderHistory = FolderModel(nameFolder: NAME_FOLDER_HISTORY);
       await folder.insertFolderDb(folder: folderHistory);
     }
     // else {
@@ -70,3 +72,17 @@ Future<void> initFolderStart(DbApiFolder folder) async {
     // }
   });
 }
+
+String formatterNamePdf(String name, bool reverse){
+  if(reverse) {
+    int length = name.length;
+    String nameNew = name.substring(0, length - 4);
+    return nameNew;
+  }else{
+    final extension = '.pdf';
+    final nameReverse = name + extension;
+    return nameReverse;
+  }
+
+}
+

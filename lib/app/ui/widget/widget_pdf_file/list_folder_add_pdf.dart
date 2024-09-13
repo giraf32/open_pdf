@@ -5,9 +5,13 @@ import '../../../domain/provider/provider_folder.dart';
 import '../../../domain/provider/provider_pdf.dart';
 
 class ListFolderAddPdf extends StatelessWidget {
-  const ListFolderAddPdf({super.key, required this.pdfModel});
+   ListFolderAddPdf({super.key, required this.pdfModel}){
+    _listPdfModel.add(pdfModel);
+  }
 
   final PdfModel pdfModel;
+  final _listPdfModel = <PdfModel>[];
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class ListFolderAddPdf extends StatelessWidget {
                   //TODO colors
                   context
                       .read<ProviderPDF>()
-                      .saveFileFolder(pdfModel, context, listFolders[index]!);
+                      .saveFileFolder(_listPdfModel, context, listFolders[index]!.nameFolder);
                   Navigator.pop(context);
                 },
               );

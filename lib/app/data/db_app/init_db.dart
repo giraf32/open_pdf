@@ -28,7 +28,7 @@ class InitDb {
         version: 1,
       );
     } catch (ex) {
-      print(ex);
+      print('_createDb $ex');
     }
   }
 }

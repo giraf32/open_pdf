@@ -5,14 +5,12 @@ class ShowsFirstPageCard extends StatelessWidget {
   final String filePath;
 
   ShowsFirstPageCard({super.key, required this.filePath});
-
-  //final size = Size(40, 70);
-  final pages = PdfPage;
-
+ // final pdfDocument = PdfDocument(sourceName: filePath);
   @override
   Widget build(BuildContext context) {
-    // final document = PdfDocument.openFile(filePath);
+   //  final document = PdfDocument.openFile(filePath);
     return PdfDocumentViewBuilder.file(filePath,
+        key: UniqueKey(),
         builder: (context, document) => Container(
               margin: const EdgeInsets.all(2.0),
               // padding: const EdgeInsets.all(1.0),

@@ -18,4 +18,14 @@ class FolderModel {
   String toString() {
     return 'PDFModel{id: $id,nameFolder: $nameFolder}';
   }
+
+  FolderModel copyWith({
+    int? id,
+    String? nameFolder,
+  }) {
+    return FolderModel(
+      id: id ?? this.id,
+      nameFolder: nameFolder ?? this.nameFolder,
+    );
+  }
 }

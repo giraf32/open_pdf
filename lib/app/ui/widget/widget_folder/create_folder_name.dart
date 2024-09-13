@@ -22,20 +22,31 @@ class _CreateFolderNameState extends State<CreateFolderName> {
 
   @override
   Widget build(BuildContext context) {
-    // myController.text = widget.pdfModel.name;
-
     return Container(
       padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          border: Border.all(color: Colors.red, width: 2.0),
+          borderRadius: BorderRadius.circular(18.0)),
       alignment: Alignment.center,
       height: 150,
       child: TextField(
+        cursorColor: Colors.black,
+        //cursorHeight: 20,
         autofocus: true,
         style: const TextStyle(
             color: Colors.black, fontWeight: FontWeight.w400, fontSize: 20),
         decoration: const InputDecoration(
+            labelStyle: TextStyle(color: Colors.black, fontSize: 20),
             labelText: 'Введите имя папки',
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.black,
+            )),
+            enabledBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                borderSide: BorderSide(color: Colors.black))),
         controller: myController,
         onSubmitted: (v) {
           folderModel = FolderModel(nameFolder: v);

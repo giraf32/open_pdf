@@ -42,7 +42,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     context.read<ProviderPDF>().updatePdfListModelHistory();
-   // context.read<ProviderPDF>().updatePDFListModelFavourites();
     context.read<ProviderFolder>().updateListFolder();
 
 
@@ -59,7 +58,16 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.black, fontSize: 20),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderSide: BorderSide(color: Colors.cyan,width: 5)
+            ),
+        ),
         //buttonTheme: ButtonThemeData() ,
+      //  primarySwatch: Colors.grey,
+       // primaryTextTheme: TextTheme(),
         cardColor: Colors.grey.shade200,
         primaryColor: Colors.red.shade600,
         scaffoldBackgroundColor: Colors.white,

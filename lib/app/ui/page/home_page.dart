@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, child, _) {
         final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(
+
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
           appBar: AppBar(
@@ -86,7 +87,10 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.add), label: 'Найти файл'),
             ],
           ),
-          body: child,
+          body: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: child,
+          ),
         );
       },
     );

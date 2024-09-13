@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/data/db_app/db_services_pdf.dart';
 import 'package:open_pdf/app/data/db_app/init_db.dart';
@@ -6,33 +8,44 @@ import 'package:open_pdf/app/domain/model/pdf_model.dart';
 
 import '../../../utility/pdf_function.dart';
 import '../../ui/widget/widget_pdf_file/show_alert_dialog_pdf.dart';
-import '../model/folder_model.dart';
+
 
 enum NotifierState { initial, loading, loaded }
-enum NotifierStateListPdfFolder { initial, loading, loaded }
-enum NotifierDeletePdfFolder { initial, deleting, deleted }
 
+enum NotifierStateListPdfFolder { initial, loading, loaded }
+
+enum NotifierDeletePdfFolder { initial, deleting, deleted }
 
 class ProviderPDF extends ChangeNotifier {
   ProviderPDF();
 
   NotifierState notifierState = NotifierState.initial;
-  NotifierStateListPdfFolder notifierStateListPdfFolder = NotifierStateListPdfFolder.initial;
-  NotifierDeletePdfFolder notifierDeletePdfFolder = NotifierDeletePdfFolder.initial;
+  NotifierStateListPdfFolder notifierStateListPdfFolder =
+      NotifierStateListPdfFolder.initial;
+  NotifierDeletePdfFolder notifierDeletePdfFolder =
+      NotifierDeletePdfFolder.initial;
 
-  final _pdfRepository = PdfRepository(dbServicesPdf: DbServicesPdf(InitDb.create()));
+  final _pdfRepository =
+      PdfRepository(dbServicesPdf: DbServicesPdf(InitDb.create()));
   var pdfModelListHistory = <PdfModel?>[];
-  var pdfListFavourites = <PdfModel?>[];
-
-
+ // var pdfListFavourites = <PdfModel?>[];
   var listPdfFileByNameFolder = <PdfModel?>[];
+  var listPdfAdd = <PdfModel?>[];
 
+  void setPdfAdd(PdfModel pdfModel){
+    listPdfAdd.add(pdfModel);
+   // notifyListeners();
+  }
+  void clearListPdfAdd(){
+    listPdfAdd.clear();
+  }
   //----------folder------------
   Future<void> updateListFolderByName(String nameFolder) async {
     try {
       notifierStateListPdfFolder = NotifierStateListPdfFolder.loading;
 
-      listPdfFileByNameFolder = await _pdfRepository.getLisPdfByNameFolderFromDb(nameFolder: nameFolder);
+      listPdfFileByNameFolder = await _pdfRepository
+          .getLisPdfByNameFolderFromDb(nameFolder: nameFolder);
     } catch (e, s) {
       print('Error updateListFolderByName: $e');
       print('Error updateListFolderByName: $s');
@@ -42,44 +55,59 @@ class ProviderPDF extends ChangeNotifier {
   }
 
   Future<void> saveFileFolder(
-      PdfModel pdfModel, BuildContext context, FolderModel folderModel) async {
+    List<PdfModel?> listPdfModel, BuildContext context, String nameFolder) async {
     try {
-      print('nameFolder : $folderModel');
-      print('pdfModel : $pdfModel');
-      final listFolder =
-      await _pdfRepository.getLisPdfByNameFolderFromDb(nameFolder: folderModel.nameFolder);
+      print('nameFolderSaveFileFolder : $nameFolder');
+      print('pdfModelSaveFileFolder : $listPdfModel');
+      final listFolder = await _pdfRepository.getLisPdfByNameFolderFromDb(
+          nameFolder: nameFolder);
 
       if (listFolder.isNotEmpty) {
-        final pdfListAddFolder = <PdfModel>[]..add(pdfModel);
-        //TODO folder.name _compare
+       // final pdfListAddFolder = <PdfModel>[]..add(pdfModel);
         final pdfModelClone = await comparePdfModel(
-            listFirst: pdfListAddFolder, listSecond: listFolder);
+            listFirst:listPdfModel, listSecond: listFolder);
         if (!context.mounted) return;
         if (pdfModelClone.isNotEmpty)
           await showAlertDialogPdf(context, pdfModelClone);
       }
-      await _pdfRepository.saveFileFolderAppStorage(pdfModel: pdfModel, folder: folderModel);
-      await updateListFolderByName(folderModel.nameFolder);
+      await _pdfRepository.saveFileFolderAppStorage(
+          listPdfModels: listPdfModel, nameFolder: nameFolder);
+      await updateListFolderByName(nameFolder);
     } catch (e, s) {
       print('Error savePdfFavourites: $e');
       print('Error savePdfFavourites: $s');
     }
   }
+
   Future<void> deletePdfFromFolder(String folder) async {
     notifierDeletePdfFolder = NotifierDeletePdfFolder.deleting;
     // notifyListeners();
     try {
       await _pdfRepository.deletePdfModelByNameFolderFromDb(nameFolder: folder);
-      // await Future.delayed(Duration(seconds: 5),(){_folderRepository.deletePdfModelByNameFolderFromDb(nameFolder: folder);});
 
     } catch (e, s) {
       print('Error deletePdfFolder: $e');
       print('Error deletePdfFolder: $s');
     }
     notifierDeletePdfFolder = NotifierDeletePdfFolder.initial;
-    updatePdfListModelHistory();
+    await updateListFolderByName(folder);
+    // updatePdfListModelHistory();
     notifyListeners();
   }
+
+  Future<void> changeFolder(
+      {required String nameFolder, required String newNameFolder}) async {
+    try {
+      await _pdfRepository.changeNameFolder(
+          nameFolder: nameFolder, newNameFolder: newNameFolder);
+    } catch (e, s) {
+      print('Error changePdfFolder: $e');
+      print('Error changePdfFolder: $s');
+    }
+  //  await updateListFolderByName(newNameFolder);
+  //  notifyListeners();
+  }
+
 //-------------------------------------
 
   bool changeMenuItemFavourites = false;
@@ -101,7 +129,8 @@ class ProviderPDF extends ChangeNotifier {
       final pdfModelClone = comparePdfModel(
           listFirst: listPdfModelsStorage, listSecond: pdfListModelDb);
       if (!context.mounted) return;
-      if (pdfModelClone.isNotEmpty) await showAlertDialogPdf(context, pdfModelClone);
+      if (pdfModelClone.isNotEmpty)
+        await showAlertDialogPdf(context, pdfModelClone);
       await _pdfRepository.insertDbListPdfModel(
           listPdfModels: listPdfModelsStorage);
 
@@ -116,7 +145,7 @@ class ProviderPDF extends ChangeNotifier {
     try {
       await _pdfRepository.deleteFilePdfAndModelDb(pdfModel: pdfModel);
       await updatePdfListModelHistory();
-     // await updatePDFListModelFavourites();
+      await updateListFolderByName(pdfModel.folder);
     } catch (e, s) {
       print('Error delete: $e');
       print('Error delete: $s');
@@ -154,54 +183,15 @@ class ProviderPDF extends ChangeNotifier {
     notifierState = NotifierState.loaded;
     notifyListeners();
   }
-//-------------Favourites------------------
-//   Future<void> updatePDFListModelFavourites() async {
-//     try {
-//       notifierState = NotifierState.loading;
-//
-//       pdfListFavourites = await _pdfRepository.getPdfListModelFromDbFavorite();
-//       print('localFavourites = $pdfListFavourites');
-//       notifierState = NotifierState.loaded;
-//       notifyListeners();
-//     } catch (e, s) {
-//       print('Error updatePdfListModelFavourites: $e');
-//       print('Error updatePdfListModelFavourites: $s');
-//     }
-//   }
-//
-//   Future<void> savePdfFavourites(
-//       PdfModel pdfModel, BuildContext context) async {
-//     try {
-//       final pdfListFavorites =
-//           await _pdfRepository.getPdfListModelFromDbFavorite();
-//
-//       if (pdfListFavorites.isNotEmpty) {
-//         final pdfListAddFavorites = <PdfModel>[]..add(pdfModel);
-//         final pdfModelClone = await comparePdfModel(
-//             listFirst: pdfListAddFavorites, listSecond: pdfListFavorites);
-//         if (!context.mounted) return;
-//         if (pdfModelClone.isNotEmpty)
-//           await showAlertDialogPdf(context, pdfModelClone);
-//       }
-//       await _pdfRepository.savePdfModelFavouritesAppStorage(pdfModel: pdfModel);
-//       await updatePDFListModelFavourites();
-//       await updatePdfListModelHistory();
-//     } catch (e, s) {
-//       print('Error savePdfFavourites: $e');
-//       print('Error savePdfFavourites: $s');
-//     }
-//   }
 
   Future<void> updatePdfModelDb(PdfModel newPdfModel) async {
     try {
       await _pdfRepository.updatePdfModel(pdfModel: newPdfModel);
-     // await updatePDFListModelFavourites();
+      // await updatePDFListModelFavourites();
       await updatePdfListModelHistory();
     } catch (e, s) {
       print('Error updatePdfNameFile: $e');
       print('Error updatePdfNameFile: $s');
     }
   }
-
-
 }

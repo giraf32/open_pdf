@@ -33,4 +33,25 @@ class PdfModel {
   String toString() {
     return 'PDFModel{id: $id, path: $path, name: $name, favourites: $favourites, dateTime: $dateTime, size: $size, folder: $folder}';
   }
+
+  PdfModel copyWith({
+     int? id,
+     String? path,
+     String? name,
+     String? dateTime,
+     String? size,
+     String? folder,
+     int? favourites,
+
+  }) {
+    return PdfModel(
+        id: id ?? this.id,
+        path: path ?? this.path ,
+        name: name ?? this.name,
+        favourites: favourites ?? this.favourites,
+        dateTime: dateTime ?? this.dateTime,
+        size: size ?? this.size,
+        folder: folder ?? this.folder
+    );
+  }
 }
