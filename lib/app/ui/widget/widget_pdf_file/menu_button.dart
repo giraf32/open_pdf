@@ -36,31 +36,6 @@ class MenuButton extends StatelessWidget {
                 ],
               ),
             ),
-            // PopupMenuItem(
-            //   padding: const EdgeInsets.all(5.0),
-            //   onTap: () {
-            //     context
-            //         .read<ProviderPDF>()
-            //         .savePdfFavourites(pdfModel, context);
-            //
-            //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            //       content: Text('Файл добавлен в избранное'),
-            //       behavior: SnackBarBehavior.floating,
-            //     ));
-            //   },
-            //   child: Row(
-            //     children: [
-            //       Icon(
-            //         Icons.favorite,
-            //         color: pdfModel.favourites == 1
-            //             ? Colors.redAccent
-            //             : Colors.black,
-            //       ),
-            //       SizedBox(width: 10),
-            //       Text('В избранное')
-            //     ],
-            //   ),
-            // ),
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {

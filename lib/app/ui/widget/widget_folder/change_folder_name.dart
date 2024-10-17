@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/folder_model.dart';
 import 'package:open_pdf/app/domain/provider/provider_folder.dart';
-import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
+import 'package:open_pdf/app/domain/provider/provider_folder_pdf.dart';
 import 'package:provider/provider.dart';
 
 class ChangeFolderName extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ChangeFolderNameState extends State<ChangeFolderName> {
 
   @override
   Widget build(BuildContext context) {
-    final providerPdf = context.read<ProviderPDF>();
+    final providerPdf = context.read<ProviderFolderPdf>();
     final providerFolder = context.read<ProviderFolder>();
     myController.text = widget.folderModel.nameFolder;
     return Container(

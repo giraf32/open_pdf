@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:open_pdf/app/domain/provider/provider_pdf.dart';
+import 'package:open_pdf/app/domain/provider/provider_folder_pdf.dart';
 import 'package:open_pdf/app/ui/widget/widget_folder/change_folder_name.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,7 @@ class DeleteRenameFolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final folderName = folderModel.nameFolder;
-    final providerPdf = context.read<ProviderPDF>();
+    final providerPdf = context.read<ProviderFolderPdf>();
     final providerFolder = context.read<ProviderFolder>();
     return Container(
         height: 200,

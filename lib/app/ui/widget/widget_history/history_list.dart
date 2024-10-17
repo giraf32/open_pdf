@@ -12,7 +12,7 @@ class HistoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    context.read<ProviderPDF>().changeMenuItemFavourites = false;
+   // context.read<ProviderPDF>().changeMenuItemFavourites = false;
    // context.read<ProviderPDF>().updatePDFListFile();
     return Consumer<ProviderPDF>(builder: (_, notifier, __) {
       if (notifier.notifierState == NotifierState.loading) {

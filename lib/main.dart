@@ -7,6 +7,7 @@ import 'package:open_pdf/app_router/app_router.dart';
 import 'package:open_pdf/utility/pdf_function.dart';
 import 'package:provider/provider.dart';
 import 'app/app_const.dart';
+import 'app/domain/provider/provider_folder_pdf.dart';
 import 'app/domain/provider/provider_pdf.dart';
 
 void main() async {
@@ -23,6 +24,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ProviderFolder(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProviderFolderPdf(),
         )
       ],
       child: const MyApp(),
@@ -40,9 +44,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _router = AppRouter();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     context.read<ProviderPDF>().updatePdfListModelHistory();
     context.read<ProviderFolder>().updateListFolder();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    // context.read<ProviderPDF>().updatePdfListModelHistory();
+    // context.read<ProviderFolder>().updateListFolder();
 
 
     return MaterialApp.router(

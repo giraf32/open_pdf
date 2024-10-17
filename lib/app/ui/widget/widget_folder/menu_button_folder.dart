@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:open_pdf/app/domain/model/pdf_model.dart';
+import 'package:open_pdf/app/domain/provider/provider_folder_pdf.dart';
+import 'package:open_pdf/app/ui/widget/widget_pdf_file/list_folder_add_pdf.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../../../domain/model/pdf_model.dart';
-import '../../../domain/provider/provider_pdf.dart';
 import '../widget_pdf_file/change_name_file.dart';
 
-class MenuButtonFavourites extends StatelessWidget {
-  const MenuButtonFavourites({super.key, required this.pdfModel});
+
+class MenuButtonFolder extends StatelessWidget {
+  const MenuButtonFolder({super.key, required this.pdfModel});
 
   final PdfModel pdfModel;
 
   @override
   Widget build(BuildContext context) {
+    // var listFolder = context.read<ProviderPDF>().getListFolderName();
     return PopupMenuButton(
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         itemBuilder: (BuildContext context) {
           return [
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {
-                context.read<ProviderPDF>().deleteFilePdf(pdfModel);
+                context.read<ProviderFolderPdf>().deleteFilePdf(pdfModel);
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Файл удалён'),
                   behavior: SnackBarBehavior.floating,
@@ -69,15 +71,16 @@ class MenuButtonFavourites extends StatelessWidget {
             PopupMenuItem(
               padding: const EdgeInsets.all(5.0),
               onTap: () {
-              //  context.read<ProviderPDF>().changeOpenPdf = false;
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => ListFolderAddPdf(pdfModel: pdfModel));
+                // _listFolderBottomSheet(context));
               },
-              child: const Row(
-                children: [
-                  Icon(Icons.folder_open),
-                  SizedBox(width: 10),
-                  Text('Открыть PDF')
-                ],
-              ),
+              child: const Row(children: [
+                Icon(Icons.folder_open),
+                SizedBox(width: 10),
+                Text('В папку'),
+              ]),
             ),
           ];
         });

@@ -12,10 +12,13 @@ class DbServicesPdf implements DbApiPdf {
   DbServicesPdf(this.initDb);
 
   @override
-  Future<void> insertPdfDb({required PdfModel pdfModel}) async {
+  Future<int> insertPdfDb({required PdfModel pdfModel}) async {
     final db = await initDb.database;
-    await db!.insert('pdf', pdfModel.toMapPDF(),
+   var id =  await db!.insert('pdf', pdfModel.toMapPDF(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+    print('insertPdfDb ---------- $pdfModel');
+    print('insertPdfDb id ---------- $id');
+    return id;
   }
 
   @override
