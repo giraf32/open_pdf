@@ -22,11 +22,16 @@ class _ChangeCheckBoxState extends State<ChangeCheckBox> {
       value: isChecked,
       onChanged: (bool? value) {
         if (value == true) {
-          context.read<ProviderFolderPdf>().setAddPdfListFolder(widget.pdfModel);
+          context
+              .read<ProviderFolderPdf>()
+              .setAddPdfListFolder(widget.pdfModel);
+          context.read<ProviderFolderPdf>().setTextButton(value!);
         }
         if (value != true) {
-          //TODO clear listPdfAdd
-          // context.read<ProviderPDF>().setPdfAdd(widget.pdfModel);
+          context
+              .read<ProviderFolderPdf>()
+              .deletePdfListFolder(widget.pdfModel);
+          context.read<ProviderFolderPdf>().setTextButton(value!);
         }
 
         setState(() {

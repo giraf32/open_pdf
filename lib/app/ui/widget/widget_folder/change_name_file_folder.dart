@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
+import 'package:open_pdf/app/domain/provider/provider_folder_pdf.dart';
 import 'package:open_pdf/utility/pdf_function.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/provider/provider_pdf.dart';
 
-class ChangeNameFile extends StatefulWidget {
-  const ChangeNameFile({super.key, required this.pdfModel});
+
+class ChangeNameFileFolder extends StatefulWidget {
+  const ChangeNameFileFolder({super.key, required this.pdfModel});
 
   final PdfModel pdfModel;
 
   @override
-  State<ChangeNameFile> createState() => _ChangeNameFileState();
+  State<ChangeNameFileFolder> createState() => _ChangeNameFileFolderState();
 }
 
-class _ChangeNameFileState extends State<ChangeNameFile> {
+class _ChangeNameFileFolderState extends State<ChangeNameFileFolder> {
   final myController = TextEditingController();
 
   @override
@@ -51,7 +52,7 @@ class _ChangeNameFileState extends State<ChangeNameFile> {
         controller: myController,
         onSubmitted: (v) {
           var name = formatterNamePdf(v, false);
-          context.read<ProviderPDF>().updatePdfModelDb(PdfModel(
+          context.read<ProviderFolderPdf>().updatePdfFolderModelDb(PdfModel(
               dateTime: widget.pdfModel.dateTime,
               id: widget.pdfModel.id,
               path: widget.pdfModel.path,

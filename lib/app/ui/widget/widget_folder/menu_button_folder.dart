@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
 import 'package:open_pdf/app/domain/provider/provider_folder_pdf.dart';
-import 'package:open_pdf/app/ui/widget/widget_pdf_file/list_folder_add_pdf.dart';
+import 'package:open_pdf/app/ui/widget/widget_folder/change_name_file_folder.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../widget_pdf_file/change_name_file.dart';
 
 
 class MenuButtonFolder extends StatelessWidget {
@@ -17,7 +16,7 @@ class MenuButtonFolder extends StatelessWidget {
     // var listFolder = context.read<ProviderPDF>().getListFolderName();
     return PopupMenuButton(
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         itemBuilder: (BuildContext context) {
           return [
             PopupMenuItem(
@@ -57,7 +56,7 @@ class MenuButtonFolder extends StatelessWidget {
                     backgroundColor: Theme.of(context).cardColor,
                     context: context,
                     builder: (context) {
-                      return ChangeNameFile(pdfModel: pdfModel);
+                      return ChangeNameFileFolder(pdfModel: pdfModel);
                     });
               },
               child: const Row(
@@ -67,20 +66,6 @@ class MenuButtonFolder extends StatelessWidget {
                   Text('Переименовать')
                 ],
               ),
-            ),
-            PopupMenuItem(
-              padding: const EdgeInsets.all(5.0),
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => ListFolderAddPdf(pdfModel: pdfModel));
-                // _listFolderBottomSheet(context));
-              },
-              child: const Row(children: [
-                Icon(Icons.folder_open),
-                SizedBox(width: 10),
-                Text('В папку'),
-              ]),
             ),
           ];
         });

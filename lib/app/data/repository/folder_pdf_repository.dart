@@ -122,4 +122,9 @@ class FolderPdfRepository implements FolderPdfApi {
       file.delete();
     }
   }
+
+  @override
+  Future<void> updatePdfModelFolder({required PdfModel pdfModel}) async {
+    await dbServicesPdf.updatePdfDb(pdfModel: pdfModel);
+  }
 }

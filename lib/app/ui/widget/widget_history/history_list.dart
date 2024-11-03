@@ -23,8 +23,6 @@ class HistoryList extends StatelessWidget {
         if(notifier.pdfModelListHistory.isNotEmpty){
           return  ListView(
             children: notifier.pdfModelListHistory.map((e) {
-             // if(e == null)return AnimatedText();
-              //TODO null
               return PdfListItem(pdfModel: e!);
             }).toList(),
           );

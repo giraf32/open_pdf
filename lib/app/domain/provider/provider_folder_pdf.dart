@@ -22,10 +22,22 @@ class ProviderFolderPdf extends ChangeNotifier {
   var listPdfFileByNameFolder = <PdfModel?>[];
   var listPdfAdd = <PdfModel?>[];
   var listPdfAddFolder = <PdfModel?>[];
+  bool _isTextButton = false;
+
+  bool get isTextButton => _isTextButton;
+
+  void setTextButton(bool value) {
+    _isTextButton = value;
+    notifyListeners();
+  }
 
   void setAddPdfListFolder(PdfModel pdfModel) {
     listPdfAddFolder.add(pdfModel);
     // notifyListeners();
+  }
+  void deletePdfListFolder(PdfModel pdfModel){
+    int? id = pdfModel.id;
+    listPdfAddFolder.removeWhere((pdfModel) => pdfModel?.id == id);
   }
 
   void clearListPdfAddFolder() {
@@ -155,6 +167,15 @@ class ProviderFolderPdf extends ChangeNotifier {
     } catch (e, s) {
       print('Error delete: $e');
       print('Error delete: $s');
+    }
+  }
+  Future<void> updatePdfFolderModelDb(PdfModel newPdfModel) async {
+    try {
+      await _pdfRepository.updatePdfModelFolder(pdfModel: newPdfModel);
+      await updateListFolderByName(newPdfModel.folder);
+    } catch (e, s) {
+      print('Error updatePdfNameFile: $e');
+      print('Error updatePdfNameFile: $s');
     }
   }
 }

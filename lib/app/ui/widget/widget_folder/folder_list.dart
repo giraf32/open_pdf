@@ -17,8 +17,6 @@ class FolderList extends StatefulWidget {
 
 class _FolderListState extends State<FolderList> {
   GlobalKey<ScaffoldState> _globalKey =  GlobalKey<ScaffoldState>();
- // GlobalKey<ScaffoldState> _globalKey2 =  GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

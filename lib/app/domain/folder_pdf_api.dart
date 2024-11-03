@@ -13,4 +13,6 @@ abstract class FolderPdfApi {
       {required String nameFolder, required String newNameFolder});
 
   Future<void> deleteFilePdfAndModelDb({required PdfModel pdfModel});
+
+  Future<void> updatePdfModelFolder({required PdfModel pdfModel});
 }
