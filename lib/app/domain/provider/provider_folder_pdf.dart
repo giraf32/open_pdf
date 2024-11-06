@@ -22,6 +22,7 @@ class ProviderFolderPdf extends ChangeNotifier {
   var listPdfFileByNameFolder = <PdfModel?>[];
   var listPdfAdd = <PdfModel?>[];
   var listPdfAddFolder = <PdfModel?>[];
+
   bool _isTextButton = false;
 
   bool get isTextButton => _isTextButton;

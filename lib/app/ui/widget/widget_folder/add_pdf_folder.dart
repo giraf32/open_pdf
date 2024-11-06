@@ -62,7 +62,7 @@ class _AddPdfFolderState extends State<AddPdfFolder> {
                 : const Expanded(
                     flex: 4,
                     child: Text(
-                      ' Файл не найден.\n Добавьте файл в приложение.' ,
+                      ' Файл не найден.\n Добавьте файл в приложение.',
                       style: TextStyle(color: Colors.black, fontSize: 22),
                     )),
             SizedBox(
@@ -70,33 +70,43 @@ class _AddPdfFolderState extends State<AddPdfFolder> {
             ),
             Expanded(
                 flex: 1,
-                child: textButton ? TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey.shade300),
-                    onPressed: () async {
-                      var pdfListFavourites =
-                          context.read<ProviderFolderPdf>().listPdfAddFolder;
-                      debugPrint(
-                          'listAddCheckBox _______________ $pdfListFavourites');
-                      if (pdfListFavourites.isNotEmpty) {
-                        await context.read<ProviderFolderPdf>().saveFileFolder(
-                            pdfListFavourites, context, widget.folderName);
-                        context
-                            .read<ProviderFolderPdf>()
-                            .clearListPdfAddFolder();
-                        Navigator.pop(context);
-                        context.read<ProviderFolderPdf>().setTextButton(false);
-                        // context.router.replace(FolderPdfRoute(nameFolder: widget.folderNam;
-                      } else {
-                        debugPrint(
-                            'listNotCheckBox _______________ $pdfListFavourites');
-                      }
-                    },
-                    child: const Text(
-                      'Добавить в папку',
-                      style: TextStyle(color: Colors.red),
-                    )): const Center(child: Text('Выберите файл',style: TextStyle(fontSize: 22,color: Colors.red),))
-            )
+                child: textButton
+                    ? TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey.shade300),
+                        onPressed: () async {
+                          var pdfListFavourites = context
+                              .read<ProviderFolderPdf>()
+                              .listPdfAddFolder;
+                          debugPrint(
+                              'listAddCheckBox _______________ $pdfListFavourites');
+                          if (pdfListFavourites.isNotEmpty) {
+                            await context
+                                .read<ProviderFolderPdf>()
+                                .saveFileFolder(pdfListFavourites, context,
+                                    widget.folderName);
+                            context
+                                .read<ProviderFolderPdf>()
+                                .clearListPdfAddFolder();
+                            Navigator.pop(context);
+                            context
+                                .read<ProviderFolderPdf>()
+                                .setTextButton(false);
+                            // context.router.replace(FolderPdfRoute(nameFolder: widget.folderNam;
+                          } else {
+                            debugPrint(
+                                'listNotCheckBox _______________ $pdfListFavourites');
+                          }
+                        },
+                        child: const Text(
+                          'Добавить в папку',
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ))
+                    : const Center(
+                        child: Text(
+                        'Выберите файл',
+                        style: TextStyle(fontSize: 22, color: Colors.red),
+                      )))
           ],
         ));
   }

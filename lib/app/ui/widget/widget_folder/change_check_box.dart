@@ -14,7 +14,7 @@ class ChangeCheckBox extends StatefulWidget {
 
 class _ChangeCheckBoxState extends State<ChangeCheckBox> {
   bool isChecked = false;
-  var pdfListFavourites = <PdfModel?>[];
+
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ Future<void> showAlertDialogPdf(
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
+      return  AlertDialog(
         title: const Text(
           'Файл c таким именем уже был добавлен',
           style: TextStyle(fontSize: 18),
