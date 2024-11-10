@@ -107,11 +107,32 @@ class ProviderPDF extends ChangeNotifier {
   Future<void> updatePdfModelDb(PdfModel newPdfModel) async {
     try {
       await _pdfRepository.updatePdfModel(pdfModel: newPdfModel);
-      // await updatePDFListModelFavourites();
       await updatePdfListModelHistory();
     } catch (e, s) {
       print('Error updatePdfNameFile: $e');
       print('Error updatePdfNameFile: $s');
     }
+  }
+  Future<int?> getPageNumber (PdfModel pdfModel) async {
+    int? _pageNumber;
+    try {
+     _pageNumber = await _pdfRepository.getNumberPages(pdfModel: pdfModel);
+
+    } catch (e, s) {
+      print('Error getPageNumber: $e');
+      print('Error getPageNumber: $s');
+    }
+    return _pageNumber;
+  }
+  Future<void> updatePageNumber (int pageNumber,PdfModel pdfModel) async {
+    try {
+      final newPdfModel = pdfModel.copyWith(pageNumber: pageNumber);
+      await _pdfRepository.updatePdfModel(pdfModel: newPdfModel);
+
+    } catch (e, s) {
+      print('Error updatePageNumber: $e');
+      print('Error updatePageNumber: $s');
+    }
+
   }
 }

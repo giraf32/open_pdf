@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/ui/widget/widget_pdf_file/menu_button.dart';
 import 'package:open_pdf/app/ui/widget/widget_pdf_file/shows_first_page_card.dart';
-import 'package:open_pdf/app_router/app_router.dart';
+import 'package:open_pdf/app_router/app_router.gr.dart';
 import '../../../domain/model/pdf_model.dart';
 
 class PdfListItem extends StatelessWidget {
@@ -35,7 +35,7 @@ class PdfListItem extends StatelessWidget {
            // context.read<ProviderPDF>().appBarHide = false;
             if (!context.mounted) return;
            // OpenPdfRx().openPDFRoute(context, file!, pdfModel.name);
-            context.router.push(PdfRxRoute(file: file!, name: pdfModel.name));
+            context.router.push(PdfRx(file: file!, pdfModel: pdfModel));
 
           }
 

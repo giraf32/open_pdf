@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:open_pdf/app_router/app_router.dart';
+import 'package:open_pdf/app_router/app_router.gr.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/provider/provider_pdf.dart';
@@ -24,8 +24,8 @@ class _HomePageState extends State<HomePage> {
 
     return AutoTabsRouter.pageView(
       routes: [
-        HistoryRoute(),
-        FolderRoute(),
+        HistoryList(),
+        FolderList(),
       ],
       builder: (context, child, _) {
         final tabsRouter = AutoTabsRouter.of(context);

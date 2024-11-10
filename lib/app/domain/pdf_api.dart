@@ -11,6 +11,8 @@ abstract class PdfApi {
   Future<void> updatePdfModel({required PdfModel pdfModel});
   Future<List<PdfModel>?> getPdfListDeviceStorage();
   Future<void> deleteDbPdfModel({required PdfModel pdfModel});
+  Future<void> updateNumberPages({required PdfModel pdfModel});
+  Future<int?> getNumberPages({required PdfModel pdfModel});
  // Future<void> savePdfModelFavouritesAppStorage({required PdfModel pdfModel});
   // Future<List<PdfModel>> getPdfListModelFromDbFavorite();
 

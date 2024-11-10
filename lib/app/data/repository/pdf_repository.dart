@@ -37,8 +37,7 @@ class PdfRepository implements PdfApi {
     var localListPdfHistory = <PdfModel?>[];
     await dbServicesPdf.getPdfListDb().then((listModel) {
       listModel.forEach((pdfModel) {
-        if (pdfModel.favourites == 0 &&
-            pdfModel.folder == NAME_FOLDER_HISTORY) {
+        if (pdfModel.folder == NAME_FOLDER_HISTORY) {
           final id = pdfModel.id;
           print('idHistory = $id');
           var file = File(pdfModel.path);
@@ -55,9 +54,7 @@ class PdfRepository implements PdfApi {
     return localListPdfHistory;
   }
 
-  //------------------Folder-------------------
 
-  //--------------------Folder End---------------
 
   @override
   Future<List<PdfModel>?> getPdfListDeviceStorage() async {
@@ -94,7 +91,7 @@ class PdfRepository implements PdfApi {
         // id: id,
         path: path,
         name: name,
-        favourites: 0,
+        pageNumber: 1,
         dateTime: formatDate,
         size: size,
         folder: folder);
@@ -104,6 +101,27 @@ class PdfRepository implements PdfApi {
 
   void clearCachedFiles() {
     FilePicker.platform.clearTemporaryFiles();
+  }
+
+  @override
+  Future<int?> getNumberPages({required PdfModel pdfModel}) async {
+    int? _id = pdfModel.id;
+    int? _pageNumber;
+    await dbServicesPdf.getPdfListDb().then((listModel) {
+      listModel.forEach((pdfModel) {
+        if (pdfModel.id == _id ) {
+        _pageNumber = pdfModel.pageNumber;
+        }
+      });
+
+    });
+    return _pageNumber;
+  }
+
+  @override
+  Future<void> updateNumberPages({required PdfModel pdfModel}) {
+    // TODO: implement updateNumberPages
+    throw UnimplementedError();
   }
 
 // static Future<File?> loadAsset(String path) async {
@@ -121,49 +139,5 @@ class PdfRepository implements PdfApi {
 // }
 //-----------------Favourites----------
 
-// @override
-// Future<List<PdfModel>> getPdfListModelFromDbFavorite() async {
-//   var localListFavorite = <PdfModel>[];
-//   await dbServicesPdf.getPdfListDb().then((listModel) {
-//     listModel.forEach((pdfModel) {
-//       if (pdfModel.favourites == 1) {
-//         var file = File(pdfModel.path);
-//         final id = pdfModel.id;
-//         print('idFavorite = $id');
-//         if (!file.existsSync())  deleteDbPdfModel(pdfModel: pdfModel);
-//
-//         localListFavorite.add(pdfModel);
-//       }
-//       if (localListFavorite.length > 1) localListFavorite = sortListPdf(localListFavorite);
-//     });
-//   });
-//
-//   return localListFavorite;
-// }
-// @override
-// Future<void> savePdfModelFavouritesAppStorage({required PdfModel pdfModel}) async {
-//   final file = File(pdfModel.path);
-//   final appStorage = await getApplicationDocumentsDirectory();
-//   final newFile = File('${appStorage.path}/${pdfModel.name}');
-//   if (await file.exists()) {
-//     final favouritesFile = await file.copy(newFile.path);
-//     final name = pdfModel.name;
-//     final size = pdfModel.size;
-//     final folder = nameFolderFavourites;
-//     // final id = name.hashCode + 1;
-//     final path = favouritesFile.path.toString();
-//     final String formatDate = formatterDate();
-//
-//     final pdfModelFavourites = PdfModel(
-//         // id: id,
-//         path: path,
-//         name: name,
-//         favourites: 1,
-//         size: size,
-//         dateTime: formatDate,
-//         folder: folder
-//     );
-//     await dbServicesPdf.insertPdfDb(pdfModel: pdfModelFavourites);
-//   }
-// }
+
 }

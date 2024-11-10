@@ -21,7 +21,7 @@ class InitDb {
         join(await getDatabasesPath(), 'pdf_database'),
         onCreate: (Database db, version) async {
            await db.execute(
-              'CREATE TABLE pdf (id INTEGER PRIMARY KEY, path TEXT, name TEXT, favourites INTEGER, '
+              'CREATE TABLE pdf (id INTEGER PRIMARY KEY, path TEXT, name TEXT, pageNumber INTEGER, '
               'dateTime TEXT, size TEXT , folder TEXT)');
            await db.execute('CREATE TABLE folder (id INTEGER PRIMARY KEY, nameFolder TEXT)');
         },

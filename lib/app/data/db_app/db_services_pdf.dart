@@ -31,7 +31,7 @@ class DbServicesPdf implements DbApiPdf {
         id: pdfMaps[index]['id'],
         path: pdfMaps[index]['path'],
         name: pdfMaps[index]['name'],
-        favourites: pdfMaps[index]['favourites'],
+        pageNumber: pdfMaps[index]['pageNumber'],
         dateTime: pdfMaps[index]['dateTime'],
         size: pdfMaps[index]['size'],
         folder: pdfMaps[index]['folder'],

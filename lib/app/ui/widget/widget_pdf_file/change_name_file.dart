@@ -57,7 +57,7 @@ class _ChangeNameFileState extends State<ChangeNameFile> {
               path: widget.pdfModel.path,
               name: name,
               size: widget.pdfModel.size,
-              favourites: widget.pdfModel.favourites,
+              pageNumber: widget.pdfModel.pageNumber,
               folder: widget.pdfModel.folder
           ));
           Navigator.pop(context);

@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/folder_model.dart';
 import 'package:open_pdf/app/ui/widget/widget_folder/delete_rename_folder.dart';
-import 'package:open_pdf/app_router/app_router.dart';
+import 'package:open_pdf/app_router/app_router.gr.dart';
+
 
 class FolderViewer extends StatefulWidget {
   FolderViewer({super.key, required this.folderModel}) : _id = folderModel.id;
@@ -30,7 +31,7 @@ class _FolderViewerState extends State<FolderViewer> {
       title: Image.asset('assets/icon_folder.jpg'),
 
       onTap: () => context.router
-          .push(FolderPdfRoute(nameFolder: widget.folderModel.nameFolder)),
+          .push(FolderPdfList(nameFolder: widget.folderModel.nameFolder)),
       //OpenListPdfFolder().openPDFRoute(context, folderModel.nameFolder),
       onLongPress: () {
 

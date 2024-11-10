@@ -5,13 +5,13 @@ class PdfModel {
   final String dateTime;
   final String size;
   final String folder;
-  final int favourites;
+  final int pageNumber;
 
   PdfModel({
     this.id,
     required this.path,
     required this.name,
-    required this.favourites,
+    required this.pageNumber,
     required this.dateTime,
     required this.size,
     required this.folder,
@@ -22,7 +22,7 @@ class PdfModel {
       'id': id,
       'path': path,
       'name': name,
-      'favourites': favourites,
+      'pageNumber': pageNumber,
       'dateTime': dateTime,
       'size': size,
       'folder': folder,
@@ -31,7 +31,7 @@ class PdfModel {
 
   @override
   String toString() {
-    return 'PDFModel{id: $id, path: $path, name: $name, favourites: $favourites, dateTime: $dateTime, size: $size, folder: $folder}';
+    return 'PDFModel{id: $id, path: $path, name: $name, pageNumber: $pageNumber, dateTime: $dateTime, size: $size, folder: $folder}';
   }
 
   PdfModel copyWith({
@@ -41,14 +41,14 @@ class PdfModel {
      String? dateTime,
      String? size,
      String? folder,
-     int? favourites,
+     int? pageNumber,
 
   }) {
     return PdfModel(
         id: id ?? this.id,
         path: path ?? this.path ,
         name: name ?? this.name,
-        favourites: favourites ?? this.favourites,
+        pageNumber: pageNumber ?? this.pageNumber,
         dateTime: dateTime ?? this.dateTime,
         size: size ?? this.size,
         folder: folder ?? this.folder

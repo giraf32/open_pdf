@@ -7,36 +7,47 @@
 // ignore_for_file: type=lint
 // coverage:ignore-file
 
-part of 'app_router.dart';
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:io' as _i8;
+
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
+import 'package:open_pdf/app/domain/model/pdf_model.dart' as _i9;
+import 'package:open_pdf/app/ui/page/home_page.dart' as _i4;
+import 'package:open_pdf/app/ui/viewer_pdf/pdf_rx.dart' as _i5;
+import 'package:open_pdf/app/ui/widget/widget_folder/folder_list.dart' as _i1;
+import 'package:open_pdf/app/ui/widget/widget_folder/folder_pdf_list.dart'
+    as _i2;
+import 'package:open_pdf/app/ui/widget/widget_history/history_list.dart' as _i3;
 
 /// generated route for
-/// [FolderList]
-class FolderRoute extends PageRouteInfo<void> {
-  const FolderRoute({List<PageRouteInfo>? children})
+/// [_i1.FolderList]
+class FolderList extends _i6.PageRouteInfo<void> {
+  const FolderList({List<_i6.PageRouteInfo>? children})
       : super(
-          FolderRoute.name,
+          FolderList.name,
           initialChildren: children,
         );
 
-  static const String name = 'FolderRoute';
+  static const String name = 'FolderList';
 
-  static PageInfo page = PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const FolderList();
+      return const _i1.FolderList();
     },
   );
 }
 
 /// generated route for
-/// [FolderPdfList]
-class FolderPdfRoute extends PageRouteInfo<FolderPdfListArgs> {
-  FolderPdfRoute({
-    Key? key,
+/// [_i2.FolderPdfList]
+class FolderPdfList extends _i6.PageRouteInfo<FolderPdfListArgs> {
+  FolderPdfList({
+    _i7.Key? key,
     required String nameFolder,
-    List<PageRouteInfo>? children,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
-          FolderPdfRoute.name,
+          FolderPdfList.name,
           args: FolderPdfListArgs(
             key: key,
             nameFolder: nameFolder,
@@ -44,13 +55,13 @@ class FolderPdfRoute extends PageRouteInfo<FolderPdfListArgs> {
           initialChildren: children,
         );
 
-  static const String name = 'FolderPdfRoute';
+  static const String name = 'FolderPdfList';
 
-  static PageInfo page = PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<FolderPdfListArgs>();
-      return FolderPdfList(
+      return _i2.FolderPdfList(
         key: args.key,
         nameFolder: args.nameFolder,
       );
@@ -64,7 +75,7 @@ class FolderPdfListArgs {
     required this.nameFolder,
   });
 
-  final Key? key;
+  final _i7.Key? key;
 
   final String nameFolder;
 
@@ -75,28 +86,28 @@ class FolderPdfListArgs {
 }
 
 /// generated route for
-/// [HistoryList]
-class HistoryRoute extends PageRouteInfo<void> {
-  const HistoryRoute({List<PageRouteInfo>? children})
+/// [_i3.HistoryList]
+class HistoryList extends _i6.PageRouteInfo<void> {
+  const HistoryList({List<_i6.PageRouteInfo>? children})
       : super(
-          HistoryRoute.name,
+          HistoryList.name,
           initialChildren: children,
         );
 
-  static const String name = 'HistoryRoute';
+  static const String name = 'HistoryList';
 
-  static PageInfo page = PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const HistoryList();
+      return const _i3.HistoryList();
     },
   );
 }
 
 /// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
+/// [_i4.HomePage]
+class HomeRoute extends _i6.PageRouteInfo<void> {
+  const HomeRoute({List<_i6.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -104,42 +115,42 @@ class HomeRoute extends PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static PageInfo page = PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const HomePage();
+      return const _i4.HomePage();
     },
   );
 }
 
 /// generated route for
-/// [PdfRx]
-class PdfRxRoute extends PageRouteInfo<PdfRxArgs> {
-  PdfRxRoute({
-    Key? key,
-    required File file,
-    required String name,
-    List<PageRouteInfo>? children,
+/// [_i5.PdfRx]
+class PdfRx extends _i6.PageRouteInfo<PdfRxArgs> {
+  PdfRx({
+    _i7.Key? key,
+    required _i8.File file,
+    required _i9.PdfModel pdfModel,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
-          PdfRxRoute.name,
+          PdfRx.name,
           args: PdfRxArgs(
             key: key,
             file: file,
-            name: name,
+            pdfModel: pdfModel,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'PdfRxRoute';
+  static const String name = 'PdfRx';
 
-  static PageInfo page = PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<PdfRxArgs>();
-      return PdfRx(
+      return _i5.PdfRx(
         key: args.key,
         file: args.file,
-        name: args.name,
+        pdfModel: args.pdfModel,
       );
     },
   );
@@ -149,17 +160,17 @@ class PdfRxArgs {
   const PdfRxArgs({
     this.key,
     required this.file,
-    required this.name,
+    required this.pdfModel,
   });
 
-  final Key? key;
+  final _i7.Key? key;
 
-  final File file;
+  final _i8.File file;
 
-  final String name;
+  final _i9.PdfModel pdfModel;
 
   @override
   String toString() {
-    return 'PdfRxArgs{key: $key, file: $file, name: $name}';
+    return 'PdfRxArgs{key: $key, file: $file, pdfModel: $pdfModel}';
   }
 }

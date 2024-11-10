@@ -31,7 +31,7 @@ class FolderPdfRepository implements FolderPdfApi {
           // id: id,
           path: path,
           name: name,
-          favourites: 0,
+          pageNumber: 1,
           size: size,
           dateTime: formatDate,
           folder: folderName);
