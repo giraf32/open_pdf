@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
-import 'package:open_pdf/app/ui/viewer_pdf/init_pages_pdf.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:provider/provider.dart';
+
+import '../../domain/provider/provider_pdf.dart';
 
 @RoutePage()
 class PdfRx extends StatefulWidget {
@@ -19,11 +21,16 @@ class PdfRx extends StatefulWidget {
 
 class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
   final controller = PdfViewerController();
+  ProviderPDF? providerPdf;
 
-  bool isPortrait = true;
-  String errorMessage = '';
+  @override
+  void initState() {
+    super.initState();
+    providerPdf = context.read<ProviderPDF>();
+    // _pages;
+  }
+
   double? _toolbarHeight = 50;
-  late int myPagesNumber;
 
   _deleteToolBar() {
     _toolbarHeight = 0;
@@ -31,6 +38,15 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
 
   _showToolBar() {
     _toolbarHeight = 50;
+  }
+
+  int myPagesNumber = 1;
+
+  @override
+  void dispose() {
+    debugPrint('MyPagesNumber ======= $myPagesNumber');
+    providerPdf?.updatePageNumber(myPagesNumber, widget.pdfModel);
+    super.dispose();
   }
 
   @override
@@ -65,62 +81,71 @@ class _PDFScreenState extends State<PdfRx> with WidgetsBindingObserver {
             ),
           ],
         ),
-         body: InitPagesPdf(file: widget.file,pdfModel: widget.pdfModel,)
-      // PdfViewer.file(
-        //   widget.file.path,
-        //   controller: controller,
-        //   initialPageNumber: _pages,
-        //   params: PdfViewerParams(
-        //       onViewSizeChanged: (viewSize, oldViewSize, controller) {
-        //         if (oldViewSize != null) {
-        //           final centerPosition =
-        //               controller.value.calcPosition(oldViewSize);
-        //           final newMatrix = controller.calcMatrixFor(centerPosition);
-        //           Future.delayed(const Duration(milliseconds: 200), () {
-        //             controller.goTo(newMatrix);
-        //           });
-        //         }
-        //       },
-        //       viewerOverlayBuilder: (context, size, handleLinkTap) => [
-        //             PdfViewerScrollThumb(
-        //                 controller: controller,
-        //                 orientation: ScrollbarOrientation.right,
-        //                 thumbSize: const Size(
-        //                   40,
-        //                   100,
-        //                 ),
-        //                 thumbBuilder:
-        //                     (context, thumbSize, pageNumber, controller) {
-        //                   myPagesNumber = pageNumber!;
-        //                   return Container(
-        //                     decoration: BoxDecoration(
-        //                       color: Colors.black26,
-        //                       borderRadius: BorderRadius.circular(5),
-        //                     ),
-        //                     child: Center(
-        //                       child: Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.center,
-        //                         children: [
-        //                           Text(
-        //                             pageNumber.toString(),
-        //                             style: const TextStyle(color: Colors.black),
-        //                           ),
-        //                           SizedBox(
-        //                             height: 40,
-        //                           ),
-        //                           Icon(
-        //                             Icons.dehaze,
-        //                             color: Colors.black,
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ),
-        //                   );
-        //                 }),
-        //           ]),
-        // )
-    );
+        body: FutureBuilder<int?>(
+            future: context.read<ProviderPDF>().getPageNumber(widget.pdfModel),
+            builder: (BuildContext context, AsyncSnapshot<int?> snapshot) {
+              // List<Widget> children;
+              if (snapshot.hasData) {
+                //  context.router.push(PdfRxRoute(file: file, name: pdfModel.name));
+                return PdfViewer.file(
+                  widget.file.path,
+                  controller: controller,
+                  initialPageNumber: snapshot.data!,
+                  params: PdfViewerParams(
+                      onViewSizeChanged: (viewSize, oldViewSize, controller) {
+                        if (oldViewSize != null) {
+                          final centerPosition =
+                              controller.value.calcPosition(oldViewSize);
+                          final newMatrix =
+                              controller.calcMatrixFor(centerPosition);
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            controller.goTo(newMatrix);
+                          });
+                        }
+                      },
+                      viewerOverlayBuilder: (context, size, handleLinkTap) => [
+                            PdfViewerScrollThumb(
+                                controller: controller,
+                                orientation: ScrollbarOrientation.right,
+                                thumbSize: const Size(
+                                  40,
+                                  100,
+                                ),
+                                thumbBuilder: (context, thumbSize, pageNumber,
+                                    controller) {
+                                  myPagesNumber = pageNumber!;
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            pageNumber.toString(),
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                          SizedBox(
+                                            height: 40,
+                                          ),
+                                          Icon(
+                                            Icons.dehaze,
+                                            color: Colors.black,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ]),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            }));
   }
-
-
 }

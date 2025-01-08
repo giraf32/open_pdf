@@ -5,22 +5,29 @@ class InfoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        backgroundColor: Colors.cyanAccent,
-        body: Center(
-      child: Container(
-          decoration: BoxDecoration(
-              //color: theme.canvasColor,
-              //Theme.of(context).cardColor,
-              border: Border.all(color: Colors.red, width: 2.0),
-              borderRadius: BorderRadius.circular(18.0)),
-          height: 400,
-          width: 300,
-          child: Center(
-              child: Text('Info'),
-
-
-          )),
-    ));
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Info'),
+          backgroundColor: Colors.red,
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+             'Очень важно понимать некоторые \n особенности приложения: \n'
+            '1. Когда вы добавляете pdf файл в приложение, '
+                'создаётся временная копия вашего файла (в кэш), '
+                'вы можете с помощью приложения открывать файл, '
+                'но спустя некоторое время(один или два дня) система '
+                'почистит временную память (кэш) и файл будет удалён '
+                'из приложения, для файлов которые вы постоянно используете (например на работе),'
+                'создайте папку "Работа" и добавьте их туда и тогда ваш файл '
+                'будет храниться в приложение постоянно.\n '
+            '3. В приложение вы можете файл переименовать, '
+                'отправить,удалить, и это никак не повлияет '
+                'на файл оригинал в памяти вашего телефона.\n '
+            '4. При удалении приложения удалятся все копии '
+                'вами добавленные,и папки которые вы создали. ',
+              style: TextStyle(color: Colors.black, fontSize: 18),)
+        ));
   }
 }

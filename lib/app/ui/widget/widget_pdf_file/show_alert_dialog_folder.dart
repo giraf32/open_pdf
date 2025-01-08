@@ -17,6 +17,7 @@ Future<void> showAlertDialogFolder(
     context: context,
     builder: (BuildContext context) {
       return  AlertDialog(
+        backgroundColor: Colors.white,
         title: Text(
           'Выбрана папка : $nameFolder ',
           style: TextStyle(fontSize: 18),
@@ -24,8 +25,8 @@ Future<void> showAlertDialogFolder(
        // content: Text(folder.nameFolder, style: TextStyle(fontSize: 22,color: Colors.red)),
         actions: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.center,
+           crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
               TextButton(

@@ -2,15 +2,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MySharedPreferences{
   MySharedPreferences();
-  int _pages = 1;
-  int? _pageNumber = 1;
 
-  Future<void> startPage() async {
-    await SharedPreferences.getInstance();
-    print('INITsTATE APP$_pages');
+  Future<void> setFirstPage(String key,String value) async {
+    await SharedPreferences.getInstance()
+    ..setString(key,value);
+
+   // print('INITsTATE APP$_pages');
   }
-  Future<void> endPage() async {
-    await SharedPreferences.getInstance();
-    print('DISPOSE APP$_pageNumber');
+  Future<String?> getFirstPage(String key) async {
+  SharedPreferences preferences =  await SharedPreferences.getInstance();
+  String? value = await preferences.getString(key);
+  return value;
+
+   // print('DISPOSE APP$_pageNumber');
   }
 }

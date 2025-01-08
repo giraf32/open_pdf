@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:open_pdf/app/domain/model/pdf_model.dart';
+import 'package:open_pdf/app/settings/info_app.dart';
 import 'package:open_pdf/app/ui/widget/widget_folder/folder_pdf_list.dart';
+import 'package:open_pdf/donate/sbp_pay_screen.dart';
 import '../app/ui/viewer_pdf/pdf_rx.dart';
 
 class OpenPdfRx {
@@ -21,4 +23,12 @@ class OpenPdfRx {
 class OpenListPdfFolder {
   void openPDFRoute(BuildContext context, String nameFolder) => Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => FolderPdfList(nameFolder: nameFolder)));
+}
+class OpenSbp {
+  void openSbpRoute(BuildContext context) => Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => SbpPayScreen()));
+}
+class OpenInfo {
+  void openInfoAppRoute(BuildContext context) => Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => InfoApp()));
 }

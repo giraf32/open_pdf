@@ -1,4 +1,4 @@
-abstract class AppKey{
+abstract class AppKeyValue{
  static const String settingsKeyFirstPages = 'firstPages';
- static  String settingsValueFirstPages = '';
+ static  String settingsValueFirstPages = 'История';
 }

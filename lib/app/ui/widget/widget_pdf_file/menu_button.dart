@@ -17,6 +17,7 @@ class MenuButton extends StatelessWidget {
     return PopupMenuButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        color: Colors.white,
         itemBuilder: (BuildContext context) {
           return [
             PopupMenuItem(

@@ -15,6 +15,7 @@ class MenuButtonFolder extends StatelessWidget {
   Widget build(BuildContext context) {
     // var listFolder = context.read<ProviderPDF>().getListFolderName();
     return PopupMenuButton(
+        color: Colors.white,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         itemBuilder: (BuildContext context) {
